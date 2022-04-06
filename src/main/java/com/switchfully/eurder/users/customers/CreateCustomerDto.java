@@ -1,6 +1,6 @@
 package com.switchfully.eurder.users.customers;
 
-public class RegisterCustomerDto {
+public class CreateCustomerDto {
 
     private final String firstname;
     private final String lastname;
@@ -8,7 +8,7 @@ public class RegisterCustomerDto {
     private final String address;
     private final String phoneNumber;
 
-    public RegisterCustomerDto(String firstname, String lastname, String email, String address, String phoneNumber) {
+    public CreateCustomerDto(String firstname, String lastname, String email, String address, String phoneNumber) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;

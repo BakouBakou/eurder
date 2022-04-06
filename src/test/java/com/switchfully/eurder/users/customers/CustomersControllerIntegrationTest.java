@@ -18,7 +18,7 @@ class CustomersControllerIntegrationTest {
     @Test
     void givenCustomerData_whenRegisterCustomer_thenCustomerIsAddedToTheSystem() {
         //GIVEN
-        RegisterCustomerDto expectedCustomer = new RegisterCustomerDto("Baker", "El Muhur", "coolmail@domain.com", "10, cool street. 5000 Namur", "0474/12.34.56");
+        CreateCustomerDto expectedCustomer = new CreateCustomerDto("Baker", "El Muhur", "coolmail@domain.com", "10, cool street. 5000 Namur", "0474/12.34.56");
 
         //WHEN
         CustomerDto actualCustomer = RestAssured
