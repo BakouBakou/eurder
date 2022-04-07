@@ -22,6 +22,7 @@ public class CustomerService {
 
         checkInput(createCustomerDto.getEmail(), new NoEmailException());
         checkInput(createCustomerDto.getFirstname(), new NoFirstnameException());
+        checkInput(createCustomerDto.getLastname(), new NoLastnameException());
 
         Customer newCustomer = customerMapping.toCustomer(createCustomerDto);
         Customer savedCustomer = customerRepository.saveCustomer(newCustomer);
