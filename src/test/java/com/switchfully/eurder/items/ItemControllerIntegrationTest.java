@@ -14,7 +14,7 @@ import static io.restassured.http.ContentType.JSON;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class ItemsControllerIntegrationTest {
+class ItemControllerIntegrationTest {
 
     @LocalServerPort
     private int port;
