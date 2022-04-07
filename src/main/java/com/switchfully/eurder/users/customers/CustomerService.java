@@ -16,17 +16,18 @@ public class CustomerService {
 
     public CustomerDto createCustomer(CreateCustomerDto createCustomerDto) {
 
-        if (isNotProvided(createCustomerDto.getEmail())) {
-            throw new NoEmailException();
-        }
-
-        if (isNotProvided(createCustomerDto.getFirstname())) {
-            throw new NoFirstnameException();
-        }
+        checkInput(createCustomerDto.getEmail(), new NoEmailException());
+        checkInput(createCustomerDto.getFirstname(), new NoFirstnameException());
 
         Customer newCustomer = customerMapping.toCustomer(createCustomerDto);
         Customer savedCustomer = customerRepository.saveCustomer(newCustomer);
         return customerMapping.toCustomerDto(savedCustomer);
+    }
+
+    private void checkInput(String inputToCheck, RuntimeException exceptionToThrow) {
+        if (isNotProvided(inputToCheck)) {
+            throw exceptionToThrow;
+        }
     }
 
     private boolean isNotProvided(String userInput) {
