@@ -1,4 +1,4 @@
-package com.switchfully.eurder.items;
+package com.switchfully.eurder.items.dtos;
 
 public class ItemDto {
     private final String id;

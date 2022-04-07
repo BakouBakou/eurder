@@ -1,5 +1,7 @@
 package com.switchfully.eurder.items;
 
+import com.switchfully.eurder.items.dtos.AddItemDto;
+import com.switchfully.eurder.items.dtos.ItemDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

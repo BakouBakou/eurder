@@ -1,7 +1,7 @@
 package com.switchfully.eurder.items;
 
-import com.switchfully.eurder.users.customers.dtos.CreateCustomerDto;
-import com.switchfully.eurder.users.customers.dtos.CustomerDto;
+import com.switchfully.eurder.items.dtos.AddItemDto;
+import com.switchfully.eurder.items.dtos.ItemDto;
 import io.restassured.RestAssured;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
