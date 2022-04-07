@@ -32,7 +32,7 @@ class ItemsControllerIntegrationTest {
                 .contentType(JSON)
                 .when()
                 .port(port)
-                .post("/customers")
+                .post("/items")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value())
