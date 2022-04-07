@@ -1,4 +1,4 @@
-package com.switchfully.eurder.users.customers.admins;
+package com.switchfully.eurder.users.admins;
 
 import com.switchfully.eurder.users.admins.AdminRepository;
 import org.assertj.core.api.Assertions;

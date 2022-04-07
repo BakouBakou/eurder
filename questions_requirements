@@ -27,6 +27,12 @@ yes
  -> or wait for the entire ordered to be shipped
  -> or link item groups to and order id and handle item groups instead of orders
 
+ - Endpoint
+ POST /customers/{id}/order/
+ user input should contain one or multiple item groups with:
+ - item id (must exist in DB)
+ - amount (int, > 0)
+
 Story 7:
 Does it mean return all the information from all the customers when the request is performed?
 yes
