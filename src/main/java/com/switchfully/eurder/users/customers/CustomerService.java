@@ -15,6 +15,11 @@ public class CustomerService {
     }
 
     public CustomerDto createCustomer(CreateCustomerDto createCustomerDto) {
+
+        if (createCustomerDto.getEmail() == null) {
+            throw new NoEmailException();
+        }
+
         Customer newCustomer = customerMapping.toCustomer(createCustomerDto);
         Customer savedCustomer = customerRepository.saveCustomer(newCustomer);
         return customerMapping.toCustomerDto(savedCustomer);
