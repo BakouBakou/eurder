@@ -1,4 +1,4 @@
-package com.switchfully.eurder.users.customers.admins;
+package com.switchfully.eurder.users.admins;
 
 public class Admin {
     private final String username;

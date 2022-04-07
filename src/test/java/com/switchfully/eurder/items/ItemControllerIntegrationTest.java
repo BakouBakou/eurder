@@ -2,11 +2,9 @@ package com.switchfully.eurder.items;
 
 import com.switchfully.eurder.items.dtos.AddItemDto;
 import com.switchfully.eurder.items.dtos.ItemDto;
-import com.switchfully.eurder.users.customers.admins.AdminRepository;
 import io.restassured.RestAssured;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -21,8 +19,6 @@ class ItemControllerIntegrationTest {
     @LocalServerPort
     private int port;
 
-    @Autowired
-    private AdminRepository adminRepository;
 
     @Test
     void givenItemData_whenAddItemAsAdmin_thenItemIsAddedToTheSystem() {
@@ -34,7 +30,7 @@ class ItemControllerIntegrationTest {
                 .given()
                 .auth()
                 .preemptive()
-                .basic(adminRepository.getAdmin().get("default").getUsername(),adminRepository.getAdmin().get("default").getPassword())
+                .basic("default","admin")
                 .body(expectedItem)
                 .accept(JSON)
                 .contentType(JSON)
@@ -46,7 +42,6 @@ class ItemControllerIntegrationTest {
                 .statusCode(HttpStatus.CREATED.value())
                 .extract()
                 .as(ItemDto.class);
-
         //THEN
         Assertions.assertThat(actualItem.getId()).isNotNull().isNotBlank().isNotEmpty();
         Assertions.assertThat(actualItem.getName()).isEqualTo(expectedItem.getName());
@@ -56,7 +51,7 @@ class ItemControllerIntegrationTest {
     }
 
     @Test
-    void givenItemData_whenAddItemUnauthentified_thenForbiddenIsThrown() {
+    void givenItemData_whenAddItemWrongUsername_thenForbiddenIsThrown() {
         //GIVEN
         AddItemDto expectedItem = new AddItemDto("Elden Ring", "Video game that is very hard for your XboxSWitchtation", 59.99, 10);
 
@@ -66,7 +61,7 @@ class ItemControllerIntegrationTest {
                 .given()
                 .auth()
                 .preemptive()
-                .basic(adminRepository.getAdmin().get("default").getUsername(),adminRepository.getAdmin().get("default").getPassword())
+                .basic("wrongusername","admin")
                 .body(expectedItem)
                 .accept(JSON)
                 .contentType(JSON)
@@ -76,7 +71,25 @@ class ItemControllerIntegrationTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.FORBIDDEN.value());
+    }
 
+    @Test
+    void givenItemData_whenAddItemUnauthentified_thenBadRequestIsThrown() {
+        //GIVEN
+        AddItemDto expectedItem = new AddItemDto("Elden Ring", "Video game that is very hard for your XboxSWitchtation", 59.99, 10);
 
+        //WHEN
+        //THEN
+        RestAssured
+                .given()
+                .body(expectedItem)
+                .accept(JSON)
+                .contentType(JSON)
+                .when()
+                .port(port)
+                .post("/items")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 }

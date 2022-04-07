@@ -1,4 +1,4 @@
-package com.switchfully.eurder.users.customers.admins;
+package com.switchfully.eurder.users.admins;
 
 import org.springframework.stereotype.Repository;
 
@@ -14,8 +14,8 @@ public class AdminRepository {
         this.adminDatabase.put(defaultAdmin.getUsername(), defaultAdmin);
     }
 
-    public ConcurrentHashMap<String, Admin> getAdmin() {
-        return adminDatabase;
+    public Admin getAdmin(String username) {
+        return adminDatabase.get(username);
     }
 
 }
