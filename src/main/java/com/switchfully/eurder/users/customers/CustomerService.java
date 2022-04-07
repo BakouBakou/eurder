@@ -3,6 +3,8 @@ package com.switchfully.eurder.users.customers;
 import com.switchfully.eurder.users.customers.dtos.CreateCustomerDto;
 import com.switchfully.eurder.users.customers.dtos.CustomerDto;
 import com.switchfully.eurder.users.customers.exceptions.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,6 +13,7 @@ public class CustomerService {
 
     private final CustomerRepository customerRepository;
     private final CustomerMapping customerMapping;
+    private final Logger logger = LoggerFactory.getLogger(CustomerService.class);
 
     public CustomerService(CustomerRepository customerRepository, CustomerMapping customerMapping) {
         this.customerRepository = customerRepository;
@@ -18,7 +21,7 @@ public class CustomerService {
     }
 
     public CustomerDto createCustomer(CreateCustomerDto createCustomerDto) {
-
+        logger.info("createCustomer started");
 
         checkInput(isNotProvided(createCustomerDto.getEmail()), new NoEmailException());
         checkInput(isNotProvided(createCustomerDto.getFirstname()), new NoFirstnameException());
@@ -31,6 +34,7 @@ public class CustomerService {
 
         Customer newCustomer = customerMapping.toCustomer(createCustomerDto);
         Customer savedCustomer = customerRepository.saveCustomer(newCustomer);
+        logger.info("customer created in the database with id: " + savedCustomer.getId());
         return customerMapping.toCustomerDto(savedCustomer);
     }
 
@@ -38,6 +42,7 @@ public class CustomerService {
 
     private void checkInput(Boolean isInvalidInput, RuntimeException exceptionToThrow) {
         if (isInvalidInput) {
+            logger.error(exceptionToThrow.getMessage());
             throw exceptionToThrow;
         }
     }
