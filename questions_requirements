@@ -22,6 +22,11 @@ Is this understanding correct?
 - An item group contains only 1 specific type of item (specific item ID)
 yes
 
+- An order can only be finalized once every item group has been delivered
+ -> either "delete" item groups shipped from the order when they are delivered
+ -> or wait for the entire ordered to be shipped
+ -> or link item groups to and order id and handle item groups instead of orders
+
 Story 7:
 Does it mean return all the information from all the customers when the request is performed?
 yes
