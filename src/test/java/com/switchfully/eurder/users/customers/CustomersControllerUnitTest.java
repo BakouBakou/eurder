@@ -75,5 +75,64 @@ public class CustomersControllerUnitTest {
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
+    @Test
+    void givenCustomerToCreate_whenCreateCustomer_thenFirstnameCannotBeNull() {
+        //GIVEN
+        CreateCustomerDto newCustomer = new CreateCustomerDto(null, "Buyer", "some@mail.com", "10, money street. 1000 Materialist city", "123456");
+
+        //WHEN
+        //THEN
+        RestAssured
+                .given()
+                .body(newCustomer)
+                .contentType(JSON)
+                .accept(JSON)
+                .when()
+                .port(port)
+                .post("/customers")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void givenCustomerToCreate_whenCreateCustomer_thenFirstnameCannotBeEmpty() {
+        //GIVEN
+        CreateCustomerDto newCustomer = new CreateCustomerDto("", "Buyer", "some@mail.com", "10, money street. 1000 Materialist city", "123456");
+
+        //WHEN
+        //THEN
+        RestAssured
+                .given()
+                .body(newCustomer)
+                .contentType(JSON)
+                .accept(JSON)
+                .when()
+                .port(port)
+                .post("/customers")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void givenCustomerToCreate_whenCreateCustomer_thenFirstnameCannotBeBlank() {
+        //GIVEN
+        CreateCustomerDto newCustomer = new CreateCustomerDto("   ", "Buyer", "some@mail.com", "10, money street. 1000 Materialist city", "123456");
+
+        //WHEN
+        //THEN
+        RestAssured
+                .given()
+                .body(newCustomer)
+                .contentType(JSON)
+                .accept(JSON)
+                .when()
+                .port(port)
+                .post("/customers")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
 
 }

@@ -16,12 +16,20 @@ public class CustomerService {
 
     public CustomerDto createCustomer(CreateCustomerDto createCustomerDto) {
 
-        if (createCustomerDto.getEmail() == null || createCustomerDto.getEmail().isEmpty() || createCustomerDto.getEmail().isBlank()) {
+        if (isNotProvided(createCustomerDto.getEmail())) {
             throw new NoEmailException();
+        }
+
+        if (isNotProvided(createCustomerDto.getFirstname())) {
+            throw new NoFirstnameException();
         }
 
         Customer newCustomer = customerMapping.toCustomer(createCustomerDto);
         Customer savedCustomer = customerRepository.saveCustomer(newCustomer);
         return customerMapping.toCustomerDto(savedCustomer);
+    }
+
+    private boolean isNotProvided(String userInput) {
+        return userInput == null || userInput.isEmpty() || userInput.isBlank();
     }
 }
