@@ -16,7 +16,7 @@ public class CustomerService {
 
     public CustomerDto createCustomer(CreateCustomerDto createCustomerDto) {
 
-        if (createCustomerDto.getEmail() == null) {
+        if (createCustomerDto.getEmail() == null || createCustomerDto.getEmail().isEmpty()) {
             throw new NoEmailException();
         }
 
