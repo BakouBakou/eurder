@@ -6,6 +6,7 @@ first name
 name
 address
 - are there formatting/length constraints
+only for email
 
 Story 2:
 Should we perform any specific checks on the user input for creation of an item?

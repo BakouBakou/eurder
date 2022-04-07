@@ -195,4 +195,64 @@ public class CustomersControllerUnitTest {
                 .statusCode(HttpStatus.BAD_REQUEST.value());
     }
 
+    @Test
+    void givenCustomerToCreate_whenCreateCustomer_thenAddressCannotBeNull() {
+        //GIVEN
+        CreateCustomerDto newCustomer = new CreateCustomerDto("Compulsive", "Buyer", "some@mail.com", null, "123456");
+
+        //WHEN
+        //THEN
+        RestAssured
+                .given()
+                .body(newCustomer)
+                .contentType(JSON)
+                .accept(JSON)
+                .when()
+                .port(port)
+                .post("/customers")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void givenCustomerToCreate_whenCreateCustomer_thenAddressCannotBeEmpty() {
+        //GIVEN
+        CreateCustomerDto newCustomer = new CreateCustomerDto("Compulsive", "Buyer", "some@mail.com", "", "123456");
+
+        //WHEN
+        //THEN
+        RestAssured
+                .given()
+                .body(newCustomer)
+                .contentType(JSON)
+                .accept(JSON)
+                .when()
+                .port(port)
+                .post("/customers")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void givenCustomerToCreate_whenCreateCustomer_thenAddressCannotBeBlank() {
+        //GIVEN
+        CreateCustomerDto newCustomer = new CreateCustomerDto("Compulsive", "Buyer", "some@mail.com", "    ", "123456");
+
+        //WHEN
+        //THEN
+        RestAssured
+                .given()
+                .body(newCustomer)
+                .contentType(JSON)
+                .accept(JSON)
+                .when()
+                .port(port)
+                .post("/customers")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
 }

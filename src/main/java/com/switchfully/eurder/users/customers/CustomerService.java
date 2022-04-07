@@ -2,8 +2,10 @@ package com.switchfully.eurder.users.customers;
 
 import com.switchfully.eurder.users.customers.dtos.CreateCustomerDto;
 import com.switchfully.eurder.users.customers.dtos.CustomerDto;
+import com.switchfully.eurder.users.customers.exceptions.NoAddressException;
 import com.switchfully.eurder.users.customers.exceptions.NoEmailException;
 import com.switchfully.eurder.users.customers.exceptions.NoFirstnameException;
+import com.switchfully.eurder.users.customers.exceptions.NoLastnameException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,6 +25,7 @@ public class CustomerService {
         checkInput(createCustomerDto.getEmail(), new NoEmailException());
         checkInput(createCustomerDto.getFirstname(), new NoFirstnameException());
         checkInput(createCustomerDto.getLastname(), new NoLastnameException());
+        checkInput(createCustomerDto.getAddress(), new NoAddressException());
 
         Customer newCustomer = customerMapping.toCustomer(createCustomerDto);
         Customer savedCustomer = customerRepository.saveCustomer(newCustomer);
