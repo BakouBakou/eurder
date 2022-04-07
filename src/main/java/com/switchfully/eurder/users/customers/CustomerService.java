@@ -2,10 +2,7 @@ package com.switchfully.eurder.users.customers;
 
 import com.switchfully.eurder.users.customers.dtos.CreateCustomerDto;
 import com.switchfully.eurder.users.customers.dtos.CustomerDto;
-import com.switchfully.eurder.users.customers.exceptions.NoAddressException;
-import com.switchfully.eurder.users.customers.exceptions.NoEmailException;
-import com.switchfully.eurder.users.customers.exceptions.NoFirstnameException;
-import com.switchfully.eurder.users.customers.exceptions.NoLastnameException;
+import com.switchfully.eurder.users.customers.exceptions.*;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,10 +27,13 @@ public class CustomerService {
 
         checkInput(isValidEmail(createCustomerDto), new InvalidEmailFormatException());
 
+        checkInput(isExistingEmail(createCustomerDto), new EmailAlreadyInUseException());
+
         Customer newCustomer = customerMapping.toCustomer(createCustomerDto);
         Customer savedCustomer = customerRepository.saveCustomer(newCustomer);
         return customerMapping.toCustomerDto(savedCustomer);
     }
+
 
 
     private void checkInput(Boolean isInvalidInput, RuntimeException exceptionToThrow) {
@@ -44,6 +44,9 @@ public class CustomerService {
 
     private boolean isValidEmail(CreateCustomerDto createCustomerDto) {
         return !createCustomerDto.getEmail().matches("^(\\S+)@(\\S+)\\.([a-zA-Z]+)$");
+    }
+    private boolean isExistingEmail(CreateCustomerDto createCustomerDto) {
+        return customerRepository.findCustomerByEmail(createCustomerDto.getEmail()).isPresent();
     }
     private boolean isNotProvided(String userInput) {
         return userInput == null || userInput.isEmpty() || userInput.isBlank();

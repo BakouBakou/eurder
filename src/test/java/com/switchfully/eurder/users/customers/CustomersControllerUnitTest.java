@@ -5,6 +5,7 @@ import io.restassured.RestAssured;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -19,10 +20,13 @@ public class CustomersControllerUnitTest {
     @LocalServerPort
     private int port;
 
+    @Autowired
+    private CustomerRepository customerRepository;
+
 
     @Nested
     @DisplayName("Email format tests")
-    class EmailFormatTest{
+    class EmailFormatTest {
         @Test
         void givenCustomerToCreate_whenCreateCustomer_thenEmailCannotBeNull() {
             //GIVEN
@@ -182,11 +186,39 @@ public class CustomersControllerUnitTest {
                     .assertThat()
                     .statusCode(HttpStatus.BAD_REQUEST.value());
         }
+
+        @Test
+        void givenCustomerToCreate_whenEmailAlreadyExists_thenBadRequestIsThrown() {
+            //GIVEN
+            String emailThatExists = "some@mail.com";
+            CreateCustomerDto newCustomer = new CreateCustomerDto("Compulsive", "Buyer", emailThatExists, "10, money street. 1000 Materialist city", "123456");
+            //WHEN
+            customerRepository.saveCustomer(new Customer(
+                    "Not",
+                    "Inspired",
+                    emailThatExists,
+                    "somewhere",
+                    "987654"
+            ));
+
+            //THEN
+            RestAssured
+                    .given()
+                    .body(newCustomer)
+                    .contentType(JSON)
+                    .accept(JSON)
+                    .when()
+                    .port(port)
+                    .post("/customers")
+                    .then()
+                    .assertThat()
+                    .statusCode(HttpStatus.BAD_REQUEST.value());
+        }
     }
 
     @Nested
     @DisplayName("Firstname format tests")
-    class FirstnameFormatTest{
+    class FirstnameFormatTest {
         @Test
         void givenCustomerToCreate_whenCreateCustomer_thenFirstnameCannotBeNull() {
             //GIVEN
@@ -250,7 +282,7 @@ public class CustomersControllerUnitTest {
 
     @Nested
     @DisplayName("Lastname format tests")
-    class LastnameFormatTest{
+    class LastnameFormatTest {
 
         @Test
         void givenCustomerToCreate_whenCreateCustomer_thenLastnameCannotBeNull() {
@@ -316,7 +348,7 @@ public class CustomersControllerUnitTest {
 
     @Nested
     @DisplayName("Address format tests")
-    class AddressFormatTest{
+    class AddressFormatTest {
 
         @Test
         void givenCustomerToCreate_whenCreateCustomer_thenAddressCannotBeNull() {
@@ -378,5 +410,6 @@ public class CustomersControllerUnitTest {
                     .statusCode(HttpStatus.BAD_REQUEST.value());
         }
     }
+
 
 }

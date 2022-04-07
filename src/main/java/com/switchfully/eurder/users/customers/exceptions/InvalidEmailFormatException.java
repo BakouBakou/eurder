@@ -1,4 +1,4 @@
-package com.switchfully.eurder.users.customers;
+package com.switchfully.eurder.users.customers.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
