@@ -22,10 +22,14 @@ public class CustomerService {
 
     public CustomerDto createCustomer(CreateCustomerDto createCustomerDto) {
 
+
         checkInput(createCustomerDto.getEmail(), new NoEmailException());
         checkInput(createCustomerDto.getFirstname(), new NoFirstnameException());
         checkInput(createCustomerDto.getLastname(), new NoLastnameException());
         checkInput(createCustomerDto.getAddress(), new NoAddressException());
+        if (!createCustomerDto.getEmail().matches("^(\\S+)@(\\S+)\\.([a-zA-Z]+)$")) {
+            throw new InvalidEmailFormatException();
+        }
 
         Customer newCustomer = customerMapping.toCustomer(createCustomerDto);
         Customer savedCustomer = customerRepository.saveCustomer(newCustomer);
