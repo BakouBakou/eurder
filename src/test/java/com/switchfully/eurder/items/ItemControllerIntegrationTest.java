@@ -74,6 +74,29 @@ class ItemControllerIntegrationTest {
     }
 
     @Test
+    void givenItemData_whenAddItemWrongPassword_thenForbiddenIsThrown() {
+        //GIVEN
+        AddItemDto expectedItem = new AddItemDto("Elden Ring", "Video game that is very hard for your XboxSWitchtation", 59.99, 10);
+
+        //WHEN
+        //THEN
+        RestAssured
+                .given()
+                .auth()
+                .preemptive()
+                .basic("default","wrongpassword")
+                .body(expectedItem)
+                .accept(JSON)
+                .contentType(JSON)
+                .when()
+                .port(port)
+                .post("/items")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.FORBIDDEN.value());
+    }
+
+    @Test
     void givenItemData_whenAddItemUnauthentified_thenBadRequestIsThrown() {
         //GIVEN
         AddItemDto expectedItem = new AddItemDto("Elden Ring", "Video game that is very hard for your XboxSWitchtation", 59.99, 10);

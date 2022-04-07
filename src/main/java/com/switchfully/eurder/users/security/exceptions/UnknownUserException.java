@@ -1,4 +1,4 @@
-package com.switchfully.eurder.users.security;
+package com.switchfully.eurder.users.security.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.FORBIDDEN)
 public class UnknownUserException extends RuntimeException {
     public UnknownUserException() {
-        super("Unknown user. Please log in to use this feature.");
+        super("No user found for this user/password combination");
     }
 }

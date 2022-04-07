@@ -14,4 +14,8 @@ public class User {
     public boolean hasAccessTo(Feature feature) {
         return role.containsFeature(feature);
     }
+
+    public boolean hasCorrectPassword(String passwordEntered) {
+        return this.password.equals(passwordEntered);
+    }
 }

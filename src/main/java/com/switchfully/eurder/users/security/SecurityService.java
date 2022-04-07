@@ -2,6 +2,9 @@ package com.switchfully.eurder.users.security;
 
 import com.switchfully.eurder.users.admins.Admin;
 import com.switchfully.eurder.users.admins.AdminRepository;
+import com.switchfully.eurder.users.security.exceptions.UnauthorizedUserException;
+import com.switchfully.eurder.users.security.exceptions.UnknownUserException;
+import com.switchfully.eurder.users.security.exceptions.WrongPasswordException;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
@@ -22,6 +25,10 @@ public class SecurityService {
 
         if (user == null) {
             throw new UnknownUserException();
+        }
+
+        if (!user.hasCorrectPassword(usernamePassword.getPassword())){
+            throw new WrongPasswordException();
         }
 
         if (!user.hasAccessTo(feature)) {
