@@ -83,4 +83,132 @@ class ItemControllerUnitTest {
         }
     }
 
+    @Nested
+    @DisplayName("Description format tests")
+    class DescriptionFormatTest {
+        @Test
+        void givenItemToAdd_whenAddItem_thenItemDescriptionCannotBeNull() {
+            //GIVEN
+            AddItemDto newItem = new AddItemDto("Elden Ring", null, 59.99, 10);
+
+            //WHEN
+            //THEN
+            RestAssured
+                    .given()
+                    .body(newItem)
+                    .contentType(JSON)
+                    .accept(JSON)
+                    .when()
+                    .port(port)
+                    .post("/items")
+                    .then()
+                    .assertThat()
+                    .statusCode(HttpStatus.BAD_REQUEST.value());
+        }
+
+        @Test
+        void givenItemToAdd_whenAddItem_thenItemDescriptionCannotBeEmpty() {
+            //GIVEN
+            AddItemDto newItem = new AddItemDto("Elden Ring", "", 59.99, 10);
+
+            //WHEN
+            //THEN
+            RestAssured
+                    .given()
+                    .body(newItem)
+                    .contentType(JSON)
+                    .accept(JSON)
+                    .when()
+                    .port(port)
+                    .post("/items")
+                    .then()
+                    .assertThat()
+                    .statusCode(HttpStatus.BAD_REQUEST.value());
+        }
+
+        @Test
+        void givenItemToAdd_whenAddItem_thenItemDescriptionCannotBeBlank() {
+            //GIVEN
+            AddItemDto newItem = new AddItemDto("Elden Ring", "    ", 59.99, 10);
+
+            //WHEN
+            //THEN
+            RestAssured
+                    .given()
+                    .body(newItem)
+                    .contentType(JSON)
+                    .accept(JSON)
+                    .when()
+                    .port(port)
+                    .post("/items")
+                    .then()
+                    .assertThat()
+                    .statusCode(HttpStatus.BAD_REQUEST.value());
+        }
+    }
+
+    @Nested
+    @DisplayName("Price format tests")
+    class PriceFormatTest {
+        @Test
+        void givenItemToAdd_whenAddItem_thenItemPriceCannotBe0() {
+            //GIVEN
+            AddItemDto newItem = new AddItemDto("Elden Ring", "Video game that is very hard for your XboxSWitchtation", 0, 10);
+
+            //WHEN
+            //THEN
+            RestAssured
+                    .given()
+                    .body(newItem)
+                    .contentType(JSON)
+                    .accept(JSON)
+                    .when()
+                    .port(port)
+                    .post("/items")
+                    .then()
+                    .assertThat()
+                    .statusCode(HttpStatus.BAD_REQUEST.value());
+        }
+
+        @Test
+        void givenItemToAdd_whenAddItem_thenItemPriceCannotBeNegative() {
+            //GIVEN
+            AddItemDto newItem = new AddItemDto("Elden Ring", "Video game that is very hard for your XboxSWitchtation", -10.99, 10);
+
+            //WHEN
+            //THEN
+            RestAssured
+                    .given()
+                    .body(newItem)
+                    .contentType(JSON)
+                    .accept(JSON)
+                    .when()
+                    .port(port)
+                    .post("/items")
+                    .then()
+                    .assertThat()
+                    .statusCode(HttpStatus.BAD_REQUEST.value());
+        }
+    }
+
+    @Test
+    void givenItemToAdd_whenAddItem_thenItemPriceCannotBeNegative() {
+        //GIVEN
+        AddItemDto newItem = new AddItemDto("Elden Ring", "Video game that is very hard for your XboxSWitchtation", 59.99, -10);
+
+        //WHEN
+        //THEN
+        RestAssured
+                .given()
+                .body(newItem)
+                .contentType(JSON)
+                .accept(JSON)
+                .when()
+                .port(port)
+                .post("/items")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
 }
