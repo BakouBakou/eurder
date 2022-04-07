@@ -1,5 +1,9 @@
 package com.switchfully.eurder.users.customers;
 
+import com.switchfully.eurder.users.customers.dtos.CreateCustomerDto;
+import com.switchfully.eurder.users.customers.dtos.CustomerDto;
+import com.switchfully.eurder.users.customers.exceptions.NoEmailException;
+import com.switchfully.eurder.users.customers.exceptions.NoFirstnameException;
 import org.springframework.stereotype.Service;
 
 @Service

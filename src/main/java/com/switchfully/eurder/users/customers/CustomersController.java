@@ -1,5 +1,7 @@
 package com.switchfully.eurder.users.customers;
 
+import com.switchfully.eurder.users.customers.dtos.CreateCustomerDto;
+import com.switchfully.eurder.users.customers.dtos.CustomerDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

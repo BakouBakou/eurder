@@ -1,7 +1,7 @@
 package com.switchfully.eurder.users.customers;
 
+import com.switchfully.eurder.users.customers.dtos.CreateCustomerDto;
 import io.restassured.RestAssured;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;

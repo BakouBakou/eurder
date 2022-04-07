@@ -1,4 +1,4 @@
-package com.switchfully.eurder.users.customers;
+package com.switchfully.eurder.users.customers.dtos;
 
 public class CreateCustomerDto {
 
