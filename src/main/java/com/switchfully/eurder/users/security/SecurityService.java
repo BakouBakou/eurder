@@ -19,9 +19,10 @@ public class SecurityService {
         UsernamePassword usernamePassword = getUsernamePassword(authorization);
 
         User user = getUser(usernamePassword);
-//        if (user == null) {
-//            throw new UnknownUserException();
-//        }
+
+        if (user == null) {
+            throw new UnknownUserException();
+        }
 
         if (!user.hasAccessTo(feature)) {
             throw new UnauthorizedUserException();
