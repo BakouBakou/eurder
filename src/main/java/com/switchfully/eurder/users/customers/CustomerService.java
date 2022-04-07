@@ -23,25 +23,28 @@ public class CustomerService {
     public CustomerDto createCustomer(CreateCustomerDto createCustomerDto) {
 
 
-        checkInput(createCustomerDto.getEmail(), new NoEmailException());
-        checkInput(createCustomerDto.getFirstname(), new NoFirstnameException());
-        checkInput(createCustomerDto.getLastname(), new NoLastnameException());
-        checkInput(createCustomerDto.getAddress(), new NoAddressException());
-        if (!createCustomerDto.getEmail().matches("^(\\S+)@(\\S+)\\.([a-zA-Z]+)$")) {
-            throw new InvalidEmailFormatException();
-        }
+        checkInput(isNotProvided(createCustomerDto.getEmail()), new NoEmailException());
+        checkInput(isNotProvided(createCustomerDto.getFirstname()), new NoFirstnameException());
+        checkInput(isNotProvided(createCustomerDto.getLastname()), new NoLastnameException());
+        checkInput(isNotProvided(createCustomerDto.getAddress()), new NoAddressException());
+
+        checkInput(isValidEmail(createCustomerDto), new InvalidEmailFormatException());
 
         Customer newCustomer = customerMapping.toCustomer(createCustomerDto);
         Customer savedCustomer = customerRepository.saveCustomer(newCustomer);
         return customerMapping.toCustomerDto(savedCustomer);
     }
 
-    private void checkInput(String inputToCheck, RuntimeException exceptionToThrow) {
-        if (isNotProvided(inputToCheck)) {
+
+    private void checkInput(Boolean isInvalidInput, RuntimeException exceptionToThrow) {
+        if (isInvalidInput) {
             throw exceptionToThrow;
         }
     }
 
+    private boolean isValidEmail(CreateCustomerDto createCustomerDto) {
+        return !createCustomerDto.getEmail().matches("^(\\S+)@(\\S+)\\.([a-zA-Z]+)$");
+    }
     private boolean isNotProvided(String userInput) {
         return userInput == null || userInput.isEmpty() || userInput.isBlank();
     }
