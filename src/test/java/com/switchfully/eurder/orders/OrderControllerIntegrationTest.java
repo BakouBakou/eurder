@@ -59,19 +59,11 @@ class OrderControllerIntegrationTest {
     @Test
     void givenOrderItemsData_whenNewOrder_thenItemsAreOrdered() {
         //GIVEN
-//        Item item1 = itemRepository.saveItem(new Item("some Item", "it's kinda cool", 10.99, 10));
-//        Item item2 = itemRepository.saveItem(new Item("some Item2", "it's kinda cool2", 11.99, 11));
-//        Item item3 = itemRepository.saveItem(new Item("some Item3", "it's kinda cool3", 12.99, 12));
-//        Item item4 = itemRepository.saveItem(new Item("some Item4", "it's kinda cool4", 13.99, 13));
-        ItemGroup itemGroup = new ItemGroup(5, item1);
-        ItemGroup itemGroup2 = new ItemGroup(4, item2);
-        ItemGroup itemGroup3 = new ItemGroup(3, item3);
-        ItemGroup itemGroup4 = new ItemGroup(2, item4);
         Set<ItemGroup> itemGroupSet = new HashSet<>();
-        itemGroupSet.add(itemGroup);
-        itemGroupSet.add(itemGroup2);
-        itemGroupSet.add(itemGroup3);
-        itemGroupSet.add(itemGroup4);
+        itemGroupSet.add(new ItemGroup(5, item1));
+        itemGroupSet.add(new ItemGroup(4, item2));
+        itemGroupSet.add(new ItemGroup(3, item3));
+        itemGroupSet.add(new ItemGroup(2, item4));
 
         NewOrderDto expectedOrder = new NewOrderDto(itemGroupSet);
 
