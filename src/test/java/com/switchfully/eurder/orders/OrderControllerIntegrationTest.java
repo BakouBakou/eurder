@@ -1,5 +1,7 @@
 package com.switchfully.eurder.orders;
 
+import com.switchfully.eurder.orders.dtos.NewOrderDto;
+import com.switchfully.eurder.orders.dtos.OrderDto;
 import com.switchfully.eurder.users.customers.Customer;
 import com.switchfully.eurder.users.customers.CustomerRepository;
 import io.restassured.RestAssured;

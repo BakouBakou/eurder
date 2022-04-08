@@ -1,5 +1,7 @@
 package com.switchfully.eurder.orders;
 
+import com.switchfully.eurder.orders.dtos.NewOrderDto;
+import com.switchfully.eurder.orders.dtos.OrderDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

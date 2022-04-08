@@ -1,6 +1,9 @@
 package com.switchfully.eurder.orders;
 
 import com.switchfully.eurder.items.ItemService;
+import com.switchfully.eurder.orders.dtos.NewOrderDto;
+import com.switchfully.eurder.orders.dtos.OrderDto;
+import com.switchfully.eurder.orders.exceptions.EmptyOrderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

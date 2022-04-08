@@ -1,7 +1,8 @@
-package com.switchfully.eurder.orders;
+package com.switchfully.eurder.orders.dtos;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.switchfully.eurder.orders.ItemGroup;
 
 import java.util.HashSet;
 import java.util.Set;

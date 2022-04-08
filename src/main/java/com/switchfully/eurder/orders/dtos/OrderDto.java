@@ -1,4 +1,6 @@
-package com.switchfully.eurder.orders;
+package com.switchfully.eurder.orders.dtos;
+
+import com.switchfully.eurder.orders.ItemGroup;
 
 import java.util.HashSet;
 import java.util.Set;
