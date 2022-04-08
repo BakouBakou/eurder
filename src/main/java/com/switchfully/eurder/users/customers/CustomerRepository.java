@@ -2,6 +2,7 @@ package com.switchfully.eurder.users.customers;
 
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -27,4 +28,7 @@ public class CustomerRepository {
                 .findAny();
     }
 
+    public List<Customer> getAllCustomers() {
+        return customersDatabase.values().stream().toList();
+    }
 }

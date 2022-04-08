@@ -10,6 +10,8 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 
+import java.util.ArrayList;
+
 import static io.restassured.http.ContentType.JSON;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -46,5 +48,24 @@ class CustomerControllerIntegrationTest {
         Assertions.assertThat(actualCustomer.getEmail()).isEqualTo(expectedCustomer.getEmail());
         Assertions.assertThat(actualCustomer.getAddress()).isEqualTo(expectedCustomer.getAddress());
         Assertions.assertThat(actualCustomer.getPhoneNumber()).isEqualTo(expectedCustomer.getPhoneNumber());
+    }
+
+    @Test
+    void givenAdminUser_thenICanGetTheListOfUsers() {
+
+        RestAssured
+                .given()
+                .auth()
+                .preemptive()
+                .basic("default","admin")
+                .contentType(JSON)
+                .when()
+                .port(port)
+                .get("/customers")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value());
+
+
     }
 }

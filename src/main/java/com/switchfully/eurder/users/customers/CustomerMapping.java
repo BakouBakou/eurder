@@ -4,6 +4,9 @@ import com.switchfully.eurder.users.customers.dtos.CreateCustomerDto;
 import com.switchfully.eurder.users.customers.dtos.CustomerDto;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class CustomerMapping {
 
@@ -26,5 +29,11 @@ public class CustomerMapping {
                 customer.getAddress(),
                 customer.getPhoneNumber()
         );
+    }
+
+    public List<CustomerDto> toCustomerDtoList(List<Customer> customersList) {
+        return customersList.stream()
+                .map(customer -> toCustomerDto(customer))
+                .toList();
     }
 }

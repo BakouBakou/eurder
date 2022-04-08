@@ -7,6 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CustomerService {
 
@@ -18,6 +20,10 @@ public class CustomerService {
     public CustomerService(CustomerRepository customerRepository, CustomerMapping customerMapping) {
         this.customerRepository = customerRepository;
         this.customerMapping = customerMapping;
+    }
+
+    public List<CustomerDto> getCustomers() {
+        return customerMapping.toCustomerDtoList(customerRepository.getAllCustomers());
     }
 
     public CustomerDto createCustomer(CreateCustomerDto createCustomerDto) {
@@ -38,14 +44,13 @@ public class CustomerService {
         return customerMapping.toCustomerDto(savedCustomer);
     }
 
-
-
     private void checkInput(Boolean isInvalidInput, RuntimeException exceptionToThrow) {
         if (isInvalidInput) {
             logger.error(exceptionToThrow.getMessage());
             throw exceptionToThrow;
         }
     }
+
 
     private boolean isValidEmail(CreateCustomerDto createCustomerDto) {
         return !createCustomerDto.getEmail().matches("^(\\S+)@(\\S+)\\.([a-zA-Z]+)$");
@@ -56,4 +61,5 @@ public class CustomerService {
     private boolean isNotProvided(String userInput) {
         return userInput == null || userInput.isEmpty() || userInput.isBlank();
     }
+
 }
