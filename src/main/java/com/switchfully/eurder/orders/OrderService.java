@@ -20,7 +20,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ItemRepository itemRepository;
     private final CustomerRepository customerRepository;
-    private final Logger logger = LoggerFactory.getLogger(ItemService.class);
+    private final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
     public OrderService(OrderMapper orderMapper, OrderRepository orderRepository, ItemRepository itemRepository, CustomerRepository customerRepository) {
         this.orderMapper = orderMapper;
@@ -30,6 +30,8 @@ public class OrderService {
     }
 
     public OrderDto orderItems(String customerId, NewOrderDto newOrderDto) {
+
+        logger.info("Initiating new order for customer " + customerId);
 
         checkInput(newOrderDto.getItemGroupSet().size() < 1, new EmptyOrderException());
 
@@ -44,6 +46,7 @@ public class OrderService {
 
         Order newOrder = orderMapper.toOrder(customerId, newOrderDto);
         Order savedOrder = orderRepository.saveOrder(newOrder);
+        logger.info("new order with ID " + savedOrder.getId() + " saved for customer " + customerId);
         return orderMapper.toOrderDto(savedOrder);
     }
 

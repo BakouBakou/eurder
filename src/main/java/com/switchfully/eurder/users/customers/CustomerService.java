@@ -24,15 +24,20 @@ public class CustomerService {
     }
 
     public List<CustomerDto> getAllCustomers() {
+        logger.info("Getting all customers");
         return customerMapping.toCustomerDtoList(customerRepository.getAllCustomers());
     }
 
     public CustomerDto getCustomer(String id) {
-        if (customerRepository.findCustomerById(id).isPresent())
-            return customerMapping.toCustomerDto(customerRepository.findCustomerById(id).get());
-        else {
+        logger.info("Getting customer with id " + id);
+
+        if (customerRepository.findCustomerById(id).isEmpty()) {
+            logger.error(new CustomerNotFoundException(id).getMessage());
             throw new CustomerNotFoundException(id);
         }
+
+        logger.info("Customer has been found");
+        return customerMapping.toCustomerDto(customerRepository.findCustomerById(id).get());
     }
 
     public CustomerDto createCustomer(CreateCustomerDto createCustomerDto) {
