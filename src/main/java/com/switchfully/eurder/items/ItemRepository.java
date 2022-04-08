@@ -15,7 +15,7 @@ public class ItemRepository {
         return itemsDatabase.get(item.getId());
     }
 
-    public Optional<Item> getItem(String id){
+    public Optional<Item> findItemById(String id){
         return itemsDatabase.values().stream()
                 .filter(item -> item.getId().equals(id))
                 .findAny();

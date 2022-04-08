@@ -20,4 +20,11 @@ public class CustomerRepository {
                 .filter(customer -> customer.getEmail().equals(email))
                 .findAny();
     }
+
+    public Optional<Customer> findCustomerById(String id) {
+        return customersDatabase.values().stream()
+                .filter(customer -> customer.getId().equals(id))
+                .findAny();
+    }
+
 }
