@@ -11,6 +11,7 @@ public class ItemGroup {
     public static final int DAYS_BEFORE_SHIPPING_STOCK_INSUFFICIENT = 7;
     private String id;
     private int amount;
+    private double price;
     private LocalDate shippingDate;
 
     // Integration test does not work without default constructor
@@ -20,6 +21,8 @@ public class ItemGroup {
     public ItemGroup(int amount, Item item) {
         this.id = item.getId();
         this.amount = amount;
+
+        this.price = amount * item.getPrice();
 
         if (this.amount < item.getStock()){
             this.shippingDate = LocalDate.now().plusDays(DAYS_BEFORE_SHIPPING_ITEM_IN_STOCK);
@@ -36,7 +39,9 @@ public class ItemGroup {
         return amount;
     }
 
-
+    public double getPrice() {
+        return price;
+    }
     public LocalDate getShippingDate() {
         return shippingDate;
     }
