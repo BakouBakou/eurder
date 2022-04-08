@@ -4,8 +4,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class OrderMapper {
-    public Order toOrder(NewOrderDto newOrderDto) {
-        return new Order(newOrderDto.getCustomerId(), newOrderDto.getItemGroupSet());
+    public Order toOrder(String customerId, NewOrderDto newOrderDto) {
+        return new Order(customerId, newOrderDto.getItemGroupSet());
     }
 
     public OrderDto toOrderDto(Order order) {

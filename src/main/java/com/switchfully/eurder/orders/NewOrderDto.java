@@ -1,14 +1,17 @@
 package com.switchfully.eurder.orders;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.HashSet;
 import java.util.Set;
 
 public class NewOrderDto {
-    private final String customerId;
+
     private final Set<ItemGroup> itemGroupSet;
 
-    public NewOrderDto(String customerId, Set<ItemGroup> itemGroupSet) {
-        this.customerId = customerId;
+    @JsonCreator
+    public NewOrderDto(@JsonProperty("itemGroupSet") Set<ItemGroup> itemGroupSet) {
 
         this.itemGroupSet = new HashSet<>();
         this.itemGroupSet.addAll(itemGroupSet);
@@ -19,9 +22,7 @@ public class NewOrderDto {
         return itemGroupSet;
     }
 
-    public String getCustomerId() {
-        return customerId;
-    }
+
 
     public double totalPrice() {
         return 0;

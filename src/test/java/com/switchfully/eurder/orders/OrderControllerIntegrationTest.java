@@ -49,7 +49,6 @@ class OrderControllerIntegrationTest {
         itemGroupSet.add(new ItemGroup("id4", 2));
 
         NewOrderDto expectedOrder = new NewOrderDto(
-                customerId,
                 itemGroupSet
         );
 
@@ -70,7 +69,7 @@ class OrderControllerIntegrationTest {
 
         //THEN
         Assertions.assertThat(actualOrder.getId()).isNotNull().isNotBlank().isNotEmpty();
-        Assertions.assertThat(actualOrder.getCustomerId()).isEqualTo(expectedOrder.getCustomerId());
+        Assertions.assertThat(actualOrder.getCustomerId()).isEqualTo(customerId);
         Assertions.assertThat(actualOrder.getItemGroupSet()).isEqualTo(expectedOrder.getItemGroupSet());
         Assertions.assertThat(actualOrder.totalPrice()).isEqualTo(expectedOrder.totalPrice());
     }
