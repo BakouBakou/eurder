@@ -7,12 +7,12 @@ public class ItemGroup {
 
     private final String id;
     private final int amount;
-//    private final LocalDate shippingDate;
+    private final LocalDate shippingDate;
 
     public ItemGroup(String id, int amount) {
         this.id = id;
         this.amount = amount;
-        //this.shippingDate = shippingDate;
+        this.shippingDate = LocalDate.now().plusDays(1);
     }
 
     public String getId() {
@@ -37,6 +37,6 @@ public class ItemGroup {
     }
 
     public LocalDate getShippingDate() {
-        return null;
+        return shippingDate;
     }
 }
