@@ -37,7 +37,7 @@ public class OrderService {
 
         newOrderDto.getItemGroupSet().stream()
                 .map(itemGroup -> itemGroup.getId())
-                .forEach(id -> checkInput(itemRepository.findItemById(id).isEmpty(), new ItemNotFoundException()));
+                .forEach(id -> checkInput(itemRepository.findItemById(id).isEmpty(), new ItemNotFoundException(id)));
         newOrderDto.getItemGroupSet().stream()
                 .map(itemGroup -> itemGroup.getAmount())
                 .forEach(amount -> checkInput(amount <= 0, new InvalidItemAmountException()));

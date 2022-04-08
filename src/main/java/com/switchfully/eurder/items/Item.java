@@ -3,11 +3,14 @@ package com.switchfully.eurder.items;
 import java.util.UUID;
 
 public class Item {
-    private final String id;
-    private final String name;
-    private final String description;
-    private final double price;
-    private final int stock;
+    private String id;
+    private String name;
+    private String description;
+    private double price;
+    private int stock;
+
+    public Item() {
+    }
 
     public Item(String name, String description, double price, int stock) {
         this.id = UUID.randomUUID().toString();

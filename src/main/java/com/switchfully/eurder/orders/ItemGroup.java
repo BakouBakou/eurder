@@ -1,5 +1,7 @@
 package com.switchfully.eurder.orders;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.switchfully.eurder.items.Item;
 
 import java.time.LocalDate;
@@ -18,7 +20,8 @@ public class ItemGroup {
     public ItemGroup() {
     }
 
-    public ItemGroup(int amount, Item item) {
+    @JsonCreator
+    public ItemGroup(int amount, @JsonProperty("item") Item item) {
         this.id = item.getId();
         this.amount = amount;
 

@@ -9,10 +9,11 @@ import java.util.Set;
 
 public class NewOrderDto {
 
-    private final Set<ItemGroup> itemGroupSet;
+    private Set<ItemGroup> itemGroupSet;
 
-    //Without these annotations, a Jackson exception is thrown.
-    //see https://stackoverflow.com/questions/70143308/cannot-construct-instance-of-com-domain-user-no-creators-like-default-constr
+    public NewOrderDto() {
+    }
+
     @JsonCreator
     public NewOrderDto(@JsonProperty("itemGroupSet") Set<ItemGroup> itemGroupSet) {
 
