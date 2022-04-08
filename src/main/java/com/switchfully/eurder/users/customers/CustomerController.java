@@ -31,7 +31,14 @@ public class CustomerController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<CustomerDto> getCustomers(@RequestHeader String authorization){
-        securityService.validateAuthorization(authorization, Feature.GET_CUSTOMERS);
-        return customerService.getCustomers();
+        securityService.validateAuthorization(authorization, Feature.GET_ALL_CUSTOMERS);
+        return customerService.getAllCustomers();
+    }
+
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public CustomerDto getCustomer(@PathVariable String id, @RequestHeader String authorization){
+        securityService.validateAuthorization(authorization, Feature.GET_ALL_CUSTOMERS);
+        return customerService.getCustomer(id);
     }
 }

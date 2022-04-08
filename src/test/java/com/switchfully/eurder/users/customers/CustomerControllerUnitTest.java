@@ -1,7 +1,9 @@
 package com.switchfully.eurder.users.customers;
 
 import com.switchfully.eurder.users.customers.dtos.CreateCustomerDto;
+import com.switchfully.eurder.users.customers.dtos.CustomerDto;
 import io.restassured.RestAssured;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -409,6 +411,24 @@ public class CustomerControllerUnitTest {
                     .assertThat()
                     .statusCode(HttpStatus.BAD_REQUEST.value());
         }
+    }
+
+    @Test
+    void givenAdminUser_whenWrongCustomerIdIsUsed_thenGetCustomerThrowsBadRequest() {
+
+        RestAssured
+                .given()
+                .auth()
+                .preemptive()
+                .basic("default","admin")
+                .contentType(JSON)
+                .when()
+                .port(port)
+                .get("/customers/" + "customerIdThatDoesNotExist")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+
     }
 
 

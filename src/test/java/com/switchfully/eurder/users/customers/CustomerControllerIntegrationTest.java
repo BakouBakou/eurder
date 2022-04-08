@@ -5,6 +5,7 @@ import com.switchfully.eurder.users.customers.dtos.CustomerDto;
 import io.restassured.RestAssured;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,9 @@ class CustomerControllerIntegrationTest {
 
     @LocalServerPort
     private int port;
+
+    @Autowired
+    private CustomerRepository customerRepository;
 
     @Test
     void givenCustomerData_whenRegisterCustomer_thenCustomerIsAddedToTheSystem() {
@@ -65,7 +69,38 @@ class CustomerControllerIntegrationTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    void givenAdminUser_thenICanViewASingleCustomer() {
+        Customer expectedCustomer = customerRepository.saveCustomer(new Customer(
+                "test",
+                "McTest",
+                "test@test.com",
+                "somewhere",
+                "123"
+        ));
 
 
+        CustomerDto actualCustomer = RestAssured
+                .given()
+                .auth()
+                .preemptive()
+                .basic("default","admin")
+                .contentType(JSON)
+                .when()
+                .port(port)
+                .get("/customers/" + expectedCustomer.getId())
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(CustomerDto.class);
+
+        Assertions.assertThat(actualCustomer.getFirstname()).isEqualTo(expectedCustomer.getFirstname());
+        Assertions.assertThat(actualCustomer.getLastname()).isEqualTo(expectedCustomer.getLastname());
+        Assertions.assertThat(actualCustomer.getEmail()).isEqualTo(expectedCustomer.getEmail());
+        Assertions.assertThat(actualCustomer.getAddress()).isEqualTo(expectedCustomer.getAddress());
+        Assertions.assertThat(actualCustomer.getPhoneNumber()).isEqualTo(expectedCustomer.getPhoneNumber());
     }
 }

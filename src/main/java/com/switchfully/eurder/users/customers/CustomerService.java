@@ -1,5 +1,6 @@
 package com.switchfully.eurder.users.customers;
 
+import com.switchfully.eurder.orders.exceptions.CustomerNotFoundException;
 import com.switchfully.eurder.users.customers.dtos.CreateCustomerDto;
 import com.switchfully.eurder.users.customers.dtos.CustomerDto;
 import com.switchfully.eurder.users.customers.exceptions.*;
@@ -22,8 +23,16 @@ public class CustomerService {
         this.customerMapping = customerMapping;
     }
 
-    public List<CustomerDto> getCustomers() {
+    public List<CustomerDto> getAllCustomers() {
         return customerMapping.toCustomerDtoList(customerRepository.getAllCustomers());
+    }
+
+    public CustomerDto getCustomer(String id) {
+        if (customerRepository.findCustomerById(id).isPresent())
+            return customerMapping.toCustomerDto(customerRepository.findCustomerById(id).get());
+        else {
+            throw new CustomerNotFoundException(id);
+        }
     }
 
     public CustomerDto createCustomer(CreateCustomerDto createCustomerDto) {
