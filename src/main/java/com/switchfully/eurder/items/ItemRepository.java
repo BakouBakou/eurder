@@ -2,6 +2,7 @@ package com.switchfully.eurder.items;
 
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
@@ -12,5 +13,9 @@ public class ItemRepository {
     public Item saveItem(Item item) {
         itemsDatabase.put(item.getId(),item);
         return itemsDatabase.get(item.getId());
+    }
+
+    public Optional<Item> getItem(String id){
+        return Optional.ofNullable(itemsDatabase.get(id));
     }
 }

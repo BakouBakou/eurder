@@ -1,5 +1,6 @@
 package com.switchfully.eurder.orders;
 
+import com.switchfully.eurder.items.Item;
 import com.switchfully.eurder.orders.dtos.NewOrderDto;
 import com.switchfully.eurder.users.customers.Customer;
 import com.switchfully.eurder.users.customers.CustomerRepository;
@@ -43,6 +44,29 @@ class OrderControllerUnitTest {
     void givenEmptyOrderData_whenOrderItems_thenBadRequestIsThrown() {
         //GIVEN
         Set<ItemGroup> itemGroupSet = new HashSet<>();
+        NewOrderDto emptyOrder = new NewOrderDto(
+                itemGroupSet
+        );
+        //WHEN
+        //THEN
+        RestAssured
+                .given()
+                .body(emptyOrder)
+                .accept(JSON)
+                .contentType(JSON)
+                .when()
+                .port(port)
+                .post("/customers/" + customerId + "/order")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void givenItemThatDoesNotExist_whenOrderItems_thenBadRequestIsThrown() {
+        //GIVEN
+        Set<ItemGroup> itemGroupSet = new HashSet<>();
+        itemGroupSet.add(new ItemGroup(5, new Item("test","test", 5,5)));
         NewOrderDto emptyOrder = new NewOrderDto(
                 itemGroupSet
         );
