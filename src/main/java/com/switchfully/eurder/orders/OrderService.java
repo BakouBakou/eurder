@@ -15,6 +15,10 @@ public class OrderService {
 
     public OrderDto orderItems(String customerId, NewOrderDto newOrderDto) {
 
+        if (newOrderDto.getItemGroupSet().size() < 1) {
+            throw new EmptyOrderException();
+        }
+
         Order newOrder = orderMapper.toOrder(customerId, newOrderDto);
         Order savedOrder = orderRepository.saveOrder(newOrder);
         return orderMapper.toOrderDto(savedOrder);
