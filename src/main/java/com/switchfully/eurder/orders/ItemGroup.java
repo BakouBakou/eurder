@@ -35,4 +35,8 @@ public class ItemGroup {
     public int hashCode() {
         return Objects.hash(id, amount);
     }
+
+    public LocalDate getShippingDate() {
+        return null;
+    }
 }
