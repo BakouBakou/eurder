@@ -25,9 +25,8 @@ public class NewOrderDto {
         return itemGroupSet;
     }
 
-
-
     public double totalPrice() {
         return 0;
     }
+
 }
