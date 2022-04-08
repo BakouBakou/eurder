@@ -16,6 +16,8 @@ public class ItemRepository {
     }
 
     public Optional<Item> getItem(String id){
-        return Optional.ofNullable(itemsDatabase.get(id));
+        return itemsDatabase.values().stream()
+                .filter(item -> item.getId().equals(id))
+                .findAny();
     }
 }
