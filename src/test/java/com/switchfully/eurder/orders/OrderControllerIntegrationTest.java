@@ -2,8 +2,6 @@ package com.switchfully.eurder.orders;
 
 import com.switchfully.eurder.users.customers.Customer;
 import com.switchfully.eurder.users.customers.CustomerRepository;
-import com.switchfully.eurder.users.customers.dtos.CreateCustomerDto;
-import com.switchfully.eurder.users.customers.dtos.CustomerDto;
 import io.restassured.RestAssured;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static io.restassured.http.ContentType.JSON;
@@ -51,13 +48,13 @@ class OrderControllerIntegrationTest {
         itemGroupSet.add(new ItemGroup("id3", 3));
         itemGroupSet.add(new ItemGroup("id4", 2));
 
-        NewOrderItemsDto expectedOrder = new NewOrderItemsDto(
+        NewOrderDto expectedOrder = new NewOrderDto(
                 customerId,
                 itemGroupSet
         );
 
         //WHEN
-        OrderItemsDto actualOrder = RestAssured
+        OrderDto actualOrder = RestAssured
                 .given()
                 .body(expectedOrder)
                 .accept(JSON)
@@ -69,7 +66,7 @@ class OrderControllerIntegrationTest {
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value())
                 .extract()
-                .as(OrderItemsDto.class);
+                .as(OrderDto.class);
 
         //THEN
         Assertions.assertThat(actualOrder.getId()).isNotNull().isNotBlank().isNotEmpty();

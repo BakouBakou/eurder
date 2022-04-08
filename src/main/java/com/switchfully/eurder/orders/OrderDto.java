@@ -1,15 +1,14 @@
 package com.switchfully.eurder.orders;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-public class OrderItemsDto {
+public class OrderDto {
     private final String id;
     private final String customerId;
     private final Set<ItemGroup> itemGroupSet;
 
-    public OrderItemsDto(String id, String customerId, Set<ItemGroup> itemGroupSet) {
+    public OrderDto(String id, String customerId, Set<ItemGroup> itemGroupSet) {
         this.id = id;
         this.customerId = customerId;
 

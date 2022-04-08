@@ -19,7 +19,7 @@ no, 0 or more
 Story 3:
 Is this understanding correct?
 - An order has at least one item group
-- An item group contains only 1 specific type of item (specific item ID)
+- An item group contains only 1 specific type of item (specific item ID) -> sum?
 yes
 
 - An order can only be finalized once every item group has been delivered
