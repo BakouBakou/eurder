@@ -9,13 +9,16 @@ public class OrderDto {
     private final String id;
     private final String customerId;
     private final Set<ItemGroup> itemGroupSet;
+    private final double totalPrice;
 
-    public OrderDto(String id, String customerId, Set<ItemGroup> itemGroupSet) {
+    public OrderDto(String id, String customerId, Set<ItemGroup> itemGroupSet, double totalPrice) {
         this.id = id;
         this.customerId = customerId;
 
         this.itemGroupSet = new HashSet<>();
         this.itemGroupSet.addAll(itemGroupSet);
+
+        this.totalPrice = totalPrice;
     }
 
     public String getId() {
@@ -30,7 +33,7 @@ public class OrderDto {
         return itemGroupSet;
     }
 
-    public double totalPrice() {
-        return 0;
+    public double getTotalPrice() {
+        return totalPrice;
     }
 }

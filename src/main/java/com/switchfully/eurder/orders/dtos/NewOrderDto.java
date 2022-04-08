@@ -10,6 +10,7 @@ import java.util.Set;
 public class NewOrderDto {
 
     private Set<ItemGroup> itemGroupSet;
+    private double totalPrice;
 
     public NewOrderDto() {
     }
@@ -20,14 +21,22 @@ public class NewOrderDto {
         this.itemGroupSet = new HashSet<>();
         this.itemGroupSet.addAll(itemGroupSet);
 
+        this.totalPrice = calculateTotalPrice();
+
     }
 
     public Set<ItemGroup> getItemGroupSet() {
         return itemGroupSet;
     }
 
-    public double totalPrice() {
-        return 0;
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    private double calculateTotalPrice() {
+        return itemGroupSet.stream()
+                .mapToDouble(itemGroup -> itemGroup.getPrice())
+                .sum();
     }
 
 }

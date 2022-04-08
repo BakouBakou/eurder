@@ -8,13 +8,16 @@ public class Order {
     private final String id;
     private final String customerId;
     private final Set<ItemGroup> itemGroupSet;
+    private final double totalPrice;
 
-    public Order(String customerId, Set<ItemGroup> itemGroupSet) {
+    public Order(String customerId, Set<ItemGroup> itemGroupSet, double totalPrice) {
         this.id = UUID.randomUUID().toString();
         this.customerId = customerId;
 
         this.itemGroupSet = new HashSet<>();
         this.itemGroupSet.addAll(itemGroupSet);
+
+        this.totalPrice = totalPrice;
     }
 
     public String getId() {
@@ -29,7 +32,7 @@ public class Order {
         return itemGroupSet;
     }
 
-    public double totalPrice() {
-        return 0;
+    public double getTotalPrice() {
+        return totalPrice;
     }
 }

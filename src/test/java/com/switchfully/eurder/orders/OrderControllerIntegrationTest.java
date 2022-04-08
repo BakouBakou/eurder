@@ -86,6 +86,6 @@ class OrderControllerIntegrationTest {
         Assertions.assertThat(actualOrder.getId()).isNotNull().isNotBlank().isNotEmpty();
         Assertions.assertThat(actualOrder.getCustomerId()).isEqualTo(customerId);
         Assertions.assertThat(actualOrder.getItemGroupSet()).isEqualTo(expectedOrder.getItemGroupSet());
-        Assertions.assertThat(actualOrder.totalPrice()).isEqualTo(expectedOrder.totalPrice());
+        Assertions.assertThat(actualOrder.getTotalPrice()).isEqualTo(expectedOrder.getTotalPrice());
     }
 }
