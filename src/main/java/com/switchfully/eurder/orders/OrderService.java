@@ -4,13 +4,14 @@ import com.switchfully.eurder.items.ItemRepository;
 import com.switchfully.eurder.items.ItemService;
 import com.switchfully.eurder.orders.dtos.NewOrderDto;
 import com.switchfully.eurder.orders.dtos.OrderDto;
+import com.switchfully.eurder.orders.exceptions.CustomerNotFoundException;
 import com.switchfully.eurder.orders.exceptions.EmptyOrderException;
+import com.switchfully.eurder.orders.exceptions.InvalidItemAmountException;
+import com.switchfully.eurder.orders.exceptions.ItemNotFoundException;
 import com.switchfully.eurder.users.customers.CustomerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -32,19 +33,18 @@ public class OrderService {
 
         checkInput(newOrderDto.getItemGroupSet().size() < 1, new EmptyOrderException());
 
-        checkInput(elementExistsInDatabase(customerRepository.findCustomerById(customerId)), new CustomerNotFoundException());
+        checkInput(customerRepository.findCustomerById(customerId).isEmpty(), new CustomerNotFoundException());
 
         newOrderDto.getItemGroupSet().stream()
                 .map(itemGroup -> itemGroup.getId())
-                .forEach(id -> checkInput(elementExistsInDatabase(itemRepository.findItemById(id)), new ItemNotFoundException()));
+                .forEach(id -> checkInput(itemRepository.findItemById(id).isEmpty(), new ItemNotFoundException()));
+        newOrderDto.getItemGroupSet().stream()
+                .map(itemGroup -> itemGroup.getAmount())
+                .forEach(amount -> checkInput(amount <= 0, new InvalidItemAmountException()));
 
         Order newOrder = orderMapper.toOrder(customerId, newOrderDto);
         Order savedOrder = orderRepository.saveOrder(newOrder);
         return orderMapper.toOrderDto(savedOrder);
-    }
-
-    private <T> boolean elementExistsInDatabase(Optional<T> element) {
-        return element.isPresent();
     }
 
     private void checkInput(Boolean isInvalidInput, RuntimeException exceptionToThrow) {

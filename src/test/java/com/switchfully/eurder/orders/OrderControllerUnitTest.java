@@ -98,6 +98,29 @@ class OrderControllerUnitTest {
     }
 
     @Test
+    void givenNullOrNegativeAmountOfItems_whenOrderItems_thenBadRequestIsThrown() {
+        //GIVEN
+        Set<ItemGroup> itemGroupSet = new HashSet<>();
+        itemGroupSet.add(new ItemGroup(-5, item));
+        NewOrderDto emptyOrder = new NewOrderDto(
+                itemGroupSet
+        );
+        //WHEN
+        //THEN
+        RestAssured
+                .given()
+                .body(emptyOrder)
+                .accept(JSON)
+                .contentType(JSON)
+                .when()
+                .port(port)
+                .post("/customers/" + customerId + "/order")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
     void givenCustomerThatDoesNotExist_whenOrderItems_thenBadRequestIsThrown() {
         //GIVEN
         Set<ItemGroup> itemGroupSet = new HashSet<>();
