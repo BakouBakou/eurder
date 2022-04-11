@@ -1,7 +1,6 @@
 package com.switchfully.eurder.orders;
 
 import com.switchfully.eurder.items.ItemRepository;
-import com.switchfully.eurder.items.ItemService;
 import com.switchfully.eurder.orders.dtos.NewOrderDto;
 import com.switchfully.eurder.orders.dtos.OrderDto;
 import com.switchfully.eurder.orders.exceptions.CustomerNotFoundException;

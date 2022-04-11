@@ -1,7 +1,5 @@
 package com.switchfully.eurder.orders;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.switchfully.eurder.items.Item;
 
 import java.time.LocalDate;
@@ -16,12 +14,11 @@ public class ItemGroup {
     private double price;
     private LocalDate shippingDate;
 
-    // Integration test does not work without default constructor
-    public ItemGroup() {
-    }
+    // Integration test does not work with this constructor, but the app does on postman, and vice-versa
+//    public ItemGroup() {
+//    }
 
-    @JsonCreator
-    public ItemGroup(int amount, @JsonProperty("item") Item item) {
+    public ItemGroup(int amount,  Item item) {
         this.id = item.getId();
         this.amount = amount;
 

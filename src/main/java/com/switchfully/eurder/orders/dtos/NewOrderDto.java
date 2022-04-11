@@ -1,7 +1,5 @@
 package com.switchfully.eurder.orders.dtos;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.switchfully.eurder.orders.ItemGroup;
 
 import java.util.HashSet;
@@ -15,8 +13,7 @@ public class NewOrderDto {
     public NewOrderDto() {
     }
 
-    @JsonCreator
-    public NewOrderDto(@JsonProperty("itemGroupSet") Set<ItemGroup> itemGroupSet) {
+    public NewOrderDto(Set<ItemGroup> itemGroupSet) {
 
         this.itemGroupSet = new HashSet<>();
         this.itemGroupSet.addAll(itemGroupSet);
