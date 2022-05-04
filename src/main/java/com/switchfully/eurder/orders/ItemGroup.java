@@ -9,22 +9,20 @@ public class ItemGroup {
 
     public static final int DAYS_BEFORE_SHIPPING_ITEM_IN_STOCK = 1;
     public static final int DAYS_BEFORE_SHIPPING_STOCK_INSUFFICIENT = 7;
-    private String id;
-    private int amount;
-    private double price;
-    private LocalDate shippingDate;
-
-    // Integration test does not work with this constructor, but the app does on postman, and vice-versa
-//    public ItemGroup() {
-//    }
+    private final String id;
+    private final int amount;
+    private final double price;
+    private final LocalDate shippingDate;
+    private final Item item;
 
     public ItemGroup(int amount,  Item item) {
-        this.id = item.getId();
         this.amount = amount;
+        this.item = item;
+        this.id = this.item.getId();
 
-        this.price = amount * item.getPrice();
+        this.price = amount * this.item.getPrice();
 
-        if (this.amount < item.getStock()){
+        if (this.amount < this.item.getStock()){
             this.shippingDate = LocalDate.now().plusDays(DAYS_BEFORE_SHIPPING_ITEM_IN_STOCK);
         } else {
             this.shippingDate = LocalDate.now().plusDays(DAYS_BEFORE_SHIPPING_STOCK_INSUFFICIENT);
@@ -42,8 +40,13 @@ public class ItemGroup {
     public double getPrice() {
         return price;
     }
+
     public LocalDate getShippingDate() {
         return shippingDate;
+    }
+
+    public Item getItem() {
+        return item;
     }
 
     @Override
