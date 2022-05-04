@@ -34,7 +34,7 @@ public class OrderService {
 
         checkInput(newOrderDto.getItemGroupSet().size() < 1, new EmptyOrderException());
 
-        checkInput(customerRepository.findCustomerById(customerId).isEmpty(), new CustomerNotFoundException(customerId));
+        checkInput(customerRepository.findById(customerId).isEmpty(), new CustomerNotFoundException(customerId));
 
         newOrderDto.getItemGroupSet().stream()
                 .map(itemGroup -> itemGroup.getId())

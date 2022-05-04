@@ -1,13 +1,12 @@
 package com.switchfully.eurder.users.customers;
 
 import com.switchfully.eurder.users.customers.dtos.CreateCustomerDto;
-import com.switchfully.eurder.users.customers.dtos.CustomerDto;
 import io.restassured.RestAssured;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -17,6 +16,7 @@ import static io.restassured.http.ContentType.JSON;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@AutoConfigureTestDatabase
 public class CustomerControllerUnitTest {
 
     @LocalServerPort
@@ -195,7 +195,7 @@ public class CustomerControllerUnitTest {
             String emailThatExists = "some@mail.com";
             CreateCustomerDto newCustomer = new CreateCustomerDto("Compulsive", "Buyer", emailThatExists, "10, money street. 1000 Materialist city", "123456");
             //WHEN
-            customerRepository.saveCustomer(new Customer(
+            customerRepository.save(new Customer(
                     "Not",
                     "Inspired",
                     emailThatExists,

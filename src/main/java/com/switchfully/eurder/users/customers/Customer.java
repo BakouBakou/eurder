@@ -1,15 +1,25 @@
 package com.switchfully.eurder.users.customers;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.UUID;
 
+@Entity
 public class Customer {
 
-    private final String id;
-    private final String firstname;
-    private final String lastname;
-    private final String email;
-    private final String address;
-    private final String phoneNumber;
+    @Id
+    private String id;
+    @Column(name = "FIRSTNAME")
+    private String firstname;
+    @Column(name = "LASTNAME")
+    private String lastname;
+    @Column(name = "EMAIL")
+    private String email;
+    @Column(name = "ADDRESS")
+    private String address;
+    @Column(name = "PHONE")
+    private String phoneNumber;
 
     public Customer(String firstname, String lastname, String email, String address, String phoneNumber) {
         this.id = UUID.randomUUID().toString();
@@ -18,6 +28,10 @@ public class Customer {
         this.email = email;
         this.address = address;
         this.phoneNumber = phoneNumber;
+    }
+
+    public Customer() {
+
     }
 
     public String getId() {
