@@ -2,31 +2,55 @@ package com.switchfully.eurder.orders;
 
 import com.switchfully.eurder.items.Item;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.UUID;
 
+@Entity
+@Table(name = "ITEM_GROUP")
 public class ItemGroup {
 
     public static final int DAYS_BEFORE_SHIPPING_ITEM_IN_STOCK = 1;
     public static final int DAYS_BEFORE_SHIPPING_STOCK_INSUFFICIENT = 7;
-    private final String id;
-    private final int amount;
-    private final double price;
-    private final LocalDate shippingDate;
-    private final Item item;
 
-    public ItemGroup(int amount,  Item item) {
+    @Id
+    private String id;
+
+    @Column(name = "AMOUNT")
+    private int amount;
+    @ManyToOne
+    @JoinColumn(name = "FK_ITEM_ID")
+    private Item item;
+
+    @Column(name = "PRICE")
+    private double price;
+    @Column(name = "SHIPPING_DATE")
+    private LocalDate shippingDate;
+
+    @ManyToOne
+    @JoinColumn(name = "FK_ORDER_DETAIL_ID")
+    private Order order;
+
+    public ItemGroup() {
+    }
+
+    public ItemGroup(int amount, Item item, double price) {
+        this.id = UUID.randomUUID().toString();
         this.amount = amount;
         this.item = item;
-        this.id = this.item.getId();
 
-        this.price = amount * this.item.getPrice();
+        this.price = price;
 
+        // simplify
+        this.shippingDate = calculateShippingDate();
+    }
+
+    private LocalDate calculateShippingDate() {
         if (this.amount < this.item.getStock()){
-            this.shippingDate = LocalDate.now().plusDays(DAYS_BEFORE_SHIPPING_ITEM_IN_STOCK);
-        } else {
-            this.shippingDate = LocalDate.now().plusDays(DAYS_BEFORE_SHIPPING_STOCK_INSUFFICIENT);
+            return LocalDate.now().plusDays(DAYS_BEFORE_SHIPPING_ITEM_IN_STOCK);
         }
+        return LocalDate.now().plusDays(DAYS_BEFORE_SHIPPING_STOCK_INSUFFICIENT);
     }
 
     public String getId() {
@@ -47,6 +71,10 @@ public class ItemGroup {
 
     public Item getItem() {
         return item;
+    }
+
+    public Order getOrder() {
+        return order;
     }
 
     @Override

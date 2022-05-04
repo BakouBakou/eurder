@@ -2,6 +2,7 @@ package com.switchfully.eurder.orders;
 
 import com.switchfully.eurder.orders.dtos.NewOrderDto;
 import com.switchfully.eurder.orders.dtos.OrderDto;
+import com.switchfully.eurder.users.customers.Customer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

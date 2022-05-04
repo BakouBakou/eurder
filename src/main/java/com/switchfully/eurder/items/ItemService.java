@@ -25,6 +25,7 @@ public class ItemService {
     public ItemDto addItem(AddItemDto addItemDto) {
         logger.info("addItem started");
 
+        // checks duplication
         checkInput(isNotProvided(addItemDto.getName()), new NoNameException());
         checkInput(isNotProvided(addItemDto.getDescription()), new NoDescriptionException());
         checkInput(addItemDto.getPrice() <= 0, new NullOrNegativePriceException());

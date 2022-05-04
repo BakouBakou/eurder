@@ -2,6 +2,7 @@ package com.switchfully.eurder.orders;
 
 import com.switchfully.eurder.items.Item;
 import com.switchfully.eurder.items.ItemRepository;
+import com.switchfully.eurder.orders.dtos.NewItemGroupDto;
 import com.switchfully.eurder.orders.dtos.NewOrderDto;
 import com.switchfully.eurder.users.customers.Customer;
 import com.switchfully.eurder.users.customers.CustomerRepository;
@@ -57,9 +58,9 @@ class OrderControllerUnitTest {
     @Test
     void givenEmptyOrderData_whenOrderItems_thenBadRequestIsThrown() {
         //GIVEN
-        Set<ItemGroup> itemGroupSet = new HashSet<>();
+        Set<NewItemGroupDto> newItemGroupDtoSet = new HashSet<>();
         NewOrderDto emptyOrder = new NewOrderDto(
-                itemGroupSet
+                newItemGroupDtoSet
         );
         //WHEN
         //THEN
@@ -79,10 +80,10 @@ class OrderControllerUnitTest {
     @Test
     void givenItemThatDoesNotExist_whenOrderItems_thenBadRequestIsThrown() {
         //GIVEN
-        Set<ItemGroup> itemGroupSet = new HashSet<>();
-        itemGroupSet.add(new ItemGroup(5, new Item("test", "test", 5, 5)));
+        Set<NewItemGroupDto> newItemGroupDtoSet = new HashSet<>();
+        newItemGroupDtoSet.add(new NewItemGroupDto(5, new Item("test", "test", 5, 5)));
         NewOrderDto emptyOrder = new NewOrderDto(
-                itemGroupSet
+                newItemGroupDtoSet
         );
         //WHEN
         //THEN
@@ -102,10 +103,10 @@ class OrderControllerUnitTest {
     @Test
     void givenNullOrNegativeAmountOfItems_whenOrderItems_thenBadRequestIsThrown() {
         //GIVEN
-        Set<ItemGroup> itemGroupSet = new HashSet<>();
-        itemGroupSet.add(new ItemGroup(-5, item));
+        Set<NewItemGroupDto> newItemGroupDtoSet = new HashSet<>();
+        newItemGroupDtoSet.add(new NewItemGroupDto(-5, new Item("test", "test", 5, 5)));
         NewOrderDto emptyOrder = new NewOrderDto(
-                itemGroupSet
+                newItemGroupDtoSet
         );
         //WHEN
         //THEN
@@ -125,10 +126,10 @@ class OrderControllerUnitTest {
     @Test
     void givenCustomerThatDoesNotExist_whenOrderItems_thenBadRequestIsThrown() {
         //GIVEN
-        Set<ItemGroup> itemGroupSet = new HashSet<>();
-        itemGroupSet.add(new ItemGroup(2, item));
+        Set<NewItemGroupDto> newItemGroupDtoSet = new HashSet<>();
+        newItemGroupDtoSet.add(new NewItemGroupDto(2, item));
         NewOrderDto emptyOrder = new NewOrderDto(
-                itemGroupSet
+                newItemGroupDtoSet
         );
         //WHEN
         //THEN

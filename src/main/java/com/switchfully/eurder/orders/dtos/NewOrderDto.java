@@ -1,38 +1,39 @@
 package com.switchfully.eurder.orders.dtos;
 
-import com.switchfully.eurder.orders.ItemGroup;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class NewOrderDto {
 
-    private Set<ItemGroup> itemGroupSet;
+    private Set<NewItemGroupDto> newItemGroupDtoSet;
     private double totalPrice;
 
     public NewOrderDto() {
     }
 
-    public NewOrderDto(Set<ItemGroup> itemGroupSet) {
+//    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES) // if I wanted to have only 1 constructor with only 1 parameter and make sure this one is used
+    public NewOrderDto(Set<NewItemGroupDto> newItemGroupDtoSet) {
 
-        this.itemGroupSet = new HashSet<>();
-        this.itemGroupSet.addAll(itemGroupSet);
-
-        this.totalPrice = calculateTotalPrice();
+        this.newItemGroupDtoSet = new HashSet<>();
+        this.newItemGroupDtoSet.addAll(newItemGroupDtoSet);
+        // total price should be calculated on Order itself based on info from the db, easier to find where calculation is made
+        this.totalPrice = calculateTotalPrice(newItemGroupDtoSet);
 
     }
 
-    public Set<ItemGroup> getItemGroupSet() {
-        return itemGroupSet;
+    public Set<NewItemGroupDto> getNewItemGroupDtoSet() {
+        return newItemGroupDtoSet;
     }
 
     public double getTotalPrice() {
         return totalPrice;
     }
 
-    private double calculateTotalPrice() {
-        return itemGroupSet.stream()
-                .mapToDouble(itemGroup -> itemGroup.getPrice())
+    private double calculateTotalPrice(Set<NewItemGroupDto> newItemGroupDtoSet) {
+        return newItemGroupDtoSet.stream()
+                .mapToDouble(newItemGroupDto -> newItemGroupDto.getPrice())
                 .sum();
     }
 

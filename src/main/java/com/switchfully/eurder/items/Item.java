@@ -1,13 +1,24 @@
 package com.switchfully.eurder.items;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.UUID;
 
+@Entity
+@Table(name = "ITEM")
 public class Item {
-    private final String id;
-    private final String name;
-    private final String description;
-    private final double price;
-    private final int stock;
+    @Id
+    private String id;
+    @Column(name = "NAME")
+    private String name;
+    @Column(name = "DESCRIPTION")
+    private String description;
+    @Column(name = "PRICE")
+    private double price;
+    @Column(name = "STOCK")
+    private int stock;
 
 
     public Item(String name, String description, double price, int stock) {
@@ -16,6 +27,10 @@ public class Item {
         this.description = description;
         this.price = price;
         this.stock = stock;
+    }
+
+    public Item() {
+
     }
 
     public String getId() {

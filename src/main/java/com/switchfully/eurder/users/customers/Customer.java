@@ -3,11 +3,14 @@ package com.switchfully.eurder.users.customers;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.UUID;
 
 @Entity
+@Table(name = "CUSTOMER")
 public class Customer {
 
+    // could be done by Hibernate (generate the UUID)
     @Id
     private String id;
     @Column(name = "FIRSTNAME")

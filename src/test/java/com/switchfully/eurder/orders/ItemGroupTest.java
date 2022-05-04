@@ -19,7 +19,7 @@ class ItemGroupTest {
     @Test
     void givenNewItemGroup_whenItemGroupAmountSmallerThanItemStock_thenItemGroupShippingDateIsNextDay() {
         //GIVEN
-        ItemGroup itemGroup = new ItemGroup(5, item);
+        ItemGroup itemGroup = new ItemGroup(5, item, item.getPrice() * 5);
 
         //WHEN
 
@@ -30,7 +30,7 @@ class ItemGroupTest {
     @Test
     void givenNewItemGroup_whenItemGroupAmountBiggerThanItemStock_thenItemGroupShippingDateIsNextDay() {
         //GIVEN
-        ItemGroup itemGroup = new ItemGroup(15, item);
+        ItemGroup itemGroup = new ItemGroup(15, item, item.getPrice() * 15);
 
         //WHEN
 

@@ -7,10 +7,13 @@ import com.switchfully.eurder.orders.exceptions.CustomerNotFoundException;
 import com.switchfully.eurder.orders.exceptions.EmptyOrderException;
 import com.switchfully.eurder.orders.exceptions.InvalidItemAmountException;
 import com.switchfully.eurder.orders.exceptions.ItemNotFoundException;
+import com.switchfully.eurder.users.customers.Customer;
 import com.switchfully.eurder.users.customers.CustomerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class OrderService {
@@ -32,18 +35,20 @@ public class OrderService {
 
         logger.info("Initiating new order for customer " + customerId);
 
-        checkInput(newOrderDto.getItemGroupSet().size() < 1, new EmptyOrderException());
+        checkInput(newOrderDto.getNewItemGroupDtoSet().size() < 1, new EmptyOrderException());
 
-        checkInput(customerRepository.findById(customerId).isEmpty(), new CustomerNotFoundException(customerId));
+        Optional<Customer> customerById = customerRepository.findById(customerId);
+        checkInput(customerById.isEmpty(), new CustomerNotFoundException(customerId));
+        Customer customer = customerById.get();
 
-        newOrderDto.getItemGroupSet().stream()
-                .map(itemGroup -> itemGroup.getId())
-                .forEach(id -> checkInput(itemRepository.findItemById(id).isEmpty(), new ItemNotFoundException(id)));
-        newOrderDto.getItemGroupSet().stream()
-                .map(itemGroup -> itemGroup.getAmount())
-                .forEach(amount -> checkInput(amount <= 0, new InvalidItemAmountException()));
+//        newOrderDto.getNewItemGroupDtoSet().stream()
+//                .map(itemGroup -> itemGroup.getId())
+//                .forEach(id -> checkInput(itemRepository.findItemById(id).isEmpty(), new ItemNotFoundException(id)));
+//        newOrderDto.getNewItemGroupDtoSet().stream()
+//                .map(itemGroup -> itemGroup.getAmount())
+//                .forEach(amount -> checkInput(amount <= 0, new InvalidItemAmountException()));
 
-        Order newOrder = orderMapper.toOrder(customerId, newOrderDto);
+        Order newOrder = orderMapper.toOrder(customer, newOrderDto);
         Order savedOrder = orderRepository.saveOrder(newOrder);
         logger.info("new order with ID " + savedOrder.getId() + " saved for customer " + customerId);
         return orderMapper.toOrderDto(savedOrder);

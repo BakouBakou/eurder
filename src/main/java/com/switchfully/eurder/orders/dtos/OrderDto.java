@@ -1,22 +1,22 @@
 package com.switchfully.eurder.orders.dtos;
 
-import com.switchfully.eurder.orders.ItemGroup;
+import com.switchfully.eurder.users.customers.Customer;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class OrderDto {
     private final String id;
-    private final String customerId;
-    private final Set<ItemGroup> itemGroupSet;
+    private final Customer customer;
+    private final Set<ItemGroupDto> itemGroupDtoSet;
     private final double totalPrice;
 
-    public OrderDto(String id, String customerId, Set<ItemGroup> itemGroupSet, double totalPrice) {
+    public OrderDto(String id, Customer customer, Set<ItemGroupDto> itemGroupSet, double totalPrice) {
         this.id = id;
-        this.customerId = customerId;
+        this.customer = customer;
 
-        this.itemGroupSet = new HashSet<>();
-        this.itemGroupSet.addAll(itemGroupSet);
+        this.itemGroupDtoSet = new HashSet<>();
+        this.itemGroupDtoSet.addAll(itemGroupSet);
 
         this.totalPrice = totalPrice;
     }
@@ -25,12 +25,12 @@ public class OrderDto {
         return id;
     }
 
-    public String getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public Set<ItemGroup> getItemGroupSet() {
-        return itemGroupSet;
+    public Set<ItemGroupDto> getItemGroupDtoSet() {
+        return itemGroupDtoSet;
     }
 
     public double getTotalPrice() {

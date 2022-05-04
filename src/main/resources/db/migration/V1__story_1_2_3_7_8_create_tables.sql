@@ -30,12 +30,14 @@ create table ITEM
 
 create table ITEM_GROUP
 (
-    ID          varchar(255) NOT NULL UNIQUE,
+    ID                 varchar(255) NOT NULL UNIQUE,
     FK_ORDER_DETAIL_ID varchar(255) NOT NULL,
-    PRICE       NUMERIC      NOT NULL,
-    AMOUNT      INTEGER      NOT NULL,
+    PRICE              NUMERIC      NOT NULL,
+    AMOUNT             INTEGER      NOT NULL,
+    SHIPPING_DATE      TIMESTAMP    NOT NULL,
+    FK_ITEM_ID          varchar(255) NOT NULL,
     CONSTRAINT FK_ORDER_DETAIL_ID foreign key (FK_ORDER_DETAIL_ID) references ORDER_DETAIL (ID),
-    CONSTRAINT FK_ITEM_ID foreign key (ID) references ITEM (ID),
+    CONSTRAINT FK_ITEM_ID foreign key (FK_ITEM_ID) references ITEM (ID),
     CONSTRAINT PK_ITEM_GROUP PRIMARY KEY (ID)
 );
 

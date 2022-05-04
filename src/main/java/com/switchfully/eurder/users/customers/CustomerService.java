@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Transactional
@@ -33,6 +34,17 @@ public class CustomerService {
     public CustomerDto getCustomer(String id) {
         logger.info("Getting customer with id " + id);
 
+        // 2 db calls, not performant
+//        return customerRepository.findById(id)
+//                .map(customer -> {
+//
+//                    logger.info("Customer has been found");
+//                    return customerMapping.toCustomerDto(customer);
+//                })
+//                .orElseThrow(() -> {
+//                    logger.error(new CustomerNotFoundException(id).getMessage());
+//                    return new CustomerNotFoundException(id);
+//                });
         if (customerRepository.findById(id).isEmpty()) {
             logger.error(new CustomerNotFoundException(id).getMessage());
             throw new CustomerNotFoundException(id);
@@ -46,6 +58,10 @@ public class CustomerService {
         logger.info("createCustomer started");
 
 //        @NotNull //javax, instance field
+
+        //  could put on the DTO (sooner is better), check in the constructor, or even entity itself to reduce duplication
+        // validator class grouping all the checks
+        //Objects.requireNonNull(), and other existing methods for such checks might exist
         checkInput(isNotProvided(createCustomerDto.getEmail()), new NoEmailException());
         checkInput(isNotProvided(createCustomerDto.getFirstname()), new NoFirstnameException());
         checkInput(isNotProvided(createCustomerDto.getLastname()), new NoLastnameException());
@@ -53,6 +69,7 @@ public class CustomerService {
 
         checkInput(isValidEmail(createCustomerDto), new InvalidEmailFormatException());
 
+        // this kind of checks can only happen in the service because we need the repository to find the email
         checkInput(isExistingEmail(createCustomerDto), new EmailAlreadyInUseException());
 
         Customer newCustomer = customerMapping.toCustomer(createCustomerDto);
@@ -72,9 +89,11 @@ public class CustomerService {
     private boolean isValidEmail(CreateCustomerDto createCustomerDto) {
         return !createCustomerDto.getEmail().matches("^(\\S+)@(\\S+)\\.([a-zA-Z]+)$");
     }
+
     private boolean isExistingEmail(CreateCustomerDto createCustomerDto) {
         return customerRepository.findByEmail(createCustomerDto.getEmail()).isPresent();
     }
+
     private boolean isNotProvided(String userInput) {
         return userInput == null || userInput.isEmpty() || userInput.isBlank();
     }
