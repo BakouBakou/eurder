@@ -1,5 +1,6 @@
 package com.switchfully.eurder.orders;
 
+import com.switchfully.eurder.items.ItemRepository;
 import com.switchfully.eurder.orders.dtos.NewOrderDto;
 import com.switchfully.eurder.orders.dtos.OrderDto;
 import com.switchfully.eurder.orders.exceptions.CustomerNotFoundException;
@@ -20,11 +21,13 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;
     private final Logger logger = LoggerFactory.getLogger(OrderService.class);
+    private final ItemRepository itemRepository;
 
-    public OrderService(OrderMapper orderMapper, OrderRepository orderRepository, CustomerRepository customerRepository) {
+    public OrderService(OrderMapper orderMapper, OrderRepository orderRepository, CustomerRepository customerRepository, ItemRepository itemRepository) {
         this.orderMapper = orderMapper;
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
+        this.itemRepository = itemRepository;
     }
 
     public OrderDto orderItems(String customerId, NewOrderDto newOrderDto) {
@@ -43,8 +46,18 @@ public class OrderService {
 
         Order newOrder = orderMapper.toOrder(customer, newOrderDto);
         Order savedOrder = orderRepository.save(newOrder);
+
+        updateItemStock(savedOrder);
+
         logger.info("new order with ID " + savedOrder.getId() + " saved for customer " + customerId);
         return orderMapper.toOrderDto(savedOrder);
+    }
+
+    private void updateItemStock(Order order) {
+        order.getItemGroupSet().forEach(itemGroup -> {
+            itemGroup.getItem().setStock(itemGroup.getItem().getStock() - itemGroup.getAmount());
+            itemRepository.save(itemGroup.getItem());
+        });
     }
 
 

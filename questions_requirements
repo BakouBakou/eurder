@@ -14,7 +14,7 @@ Should we perform any specific checks on the user input for creation of an item?
 all of them
 - are there formatting/length constraints
 - can the stock be negative (ex: customer ordered it but it is not in stock, so we put -1 in the stock)
-no, 0 or more
+It can be negative
 
 Story 3:
 Is this understanding correct?
