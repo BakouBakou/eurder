@@ -28,10 +28,6 @@ public class ItemGroup {
     @Column(name = "SHIPPING_DATE")
     private LocalDate shippingDate;
 
-    @ManyToOne
-    @JoinColumn(name = "FK_ORDER_DETAIL_ID")
-    private Order order;
-
     public ItemGroup() {
     }
 
@@ -71,10 +67,6 @@ public class ItemGroup {
 
     public Item getItem() {
         return item;
-    }
-
-    public Order getOrder() {
-        return order;
     }
 
     @Override

@@ -54,10 +54,10 @@ class OrderControllerIntegrationTest {
                 "123"
         )).getId();
 
-        item1 = itemRepository.saveItem(new Item("some Item", "it's kinda cool", 10.99, 10));
-        item2 = itemRepository.saveItem(new Item("some Item2", "it's kinda cool2", 11.99, 11));
-        item3 = itemRepository.saveItem(new Item("some Item3", "it's kinda cool3", 12.99, 12));
-        item4 = itemRepository.saveItem(new Item("some Item4", "it's kinda cool4", 13.99, 13));
+        item1 = itemRepository.save(new Item("some Item", "it's kinda cool", 10.99, 10));
+        item2 = itemRepository.save(new Item("some Item2", "it's kinda cool2", 11.99, 11));
+        item3 = itemRepository.save(new Item("some Item3", "it's kinda cool3", 12.99, 12));
+        item4 = itemRepository.save(new Item("some Item4", "it's kinda cool4", 13.99, 13));
     }
 
     @Test

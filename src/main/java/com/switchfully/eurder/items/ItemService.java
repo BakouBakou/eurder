@@ -36,13 +36,13 @@ public class ItemService {
         checkInput(addItemDto.getStock() < 0, new NegativeStockException());
 
         Item newItem = itemMapper.toItem(addItemDto);
-        Item savedItem = itemRepository.saveItem(newItem);
+        Item savedItem = itemRepository.save(newItem);
         logger.info("item created in the database with id: " + savedItem.getId());
         return itemMapper.toItemDto(savedItem);
     }
 
     public Item findItem(ItemToOrderDto itemToOrderDto) {
-        return itemRepository.findItemById(itemToOrderDto.getId())
+        return itemRepository.findById(itemToOrderDto.getId())
                 .map(item -> {
                     logger.info("Item with id " + itemToOrderDto.getId() + " has been found");
                     return item;

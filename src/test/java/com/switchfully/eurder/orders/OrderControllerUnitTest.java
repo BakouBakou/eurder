@@ -48,7 +48,7 @@ class OrderControllerUnitTest {
                 "somewhere",
                 "123"
         )).getId();
-        item = itemRepository.saveItem(new Item(
+        item = itemRepository.save(new Item(
                 "test",
                 "test",
                 10.05,

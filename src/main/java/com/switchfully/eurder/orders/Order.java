@@ -18,8 +18,8 @@ public class Order {
     private Customer customer;
     // Make unidirectional but that mean-s that fetching an order fetches all the itemGroups -> could impact performance -> getting the itemGroup and checking for the order might be more performant
     // fetch lazy is default, Hibernate does the onetomany only when it is actually needed
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
-//    @JoinColumn(name = "FK_ORDER_DETAIL_ID")
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FK_ORDER_DETAIL_ID")
     private Set<ItemGroup> itemGroupSet;
     @Column(name = "TOTAL_PRICE")
     private double totalPrice;
