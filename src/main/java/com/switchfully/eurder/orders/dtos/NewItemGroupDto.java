@@ -1,30 +1,22 @@
 package com.switchfully.eurder.orders.dtos;
 
-import com.switchfully.eurder.items.Item;
+import com.switchfully.eurder.items.dtos.ItemToOrderDto;
 
 public class NewItemGroupDto {
 
     private final int amount;
-    private final Item item;
-    private double price;
+    private final ItemToOrderDto itemToOrderDto;
 
-    // all Dtos should use Dtos -> Item should  be a Dto as well
-    // no cascade, but find the item in DB
-    public NewItemGroupDto(int amount, Item item) {
+    public NewItemGroupDto(int amount, ItemToOrderDto itemToOrderDto) {
         this.amount = amount;
-        this.item = item;
-        this.price = item.getPrice() * amount;
+        this.itemToOrderDto = itemToOrderDto;
     }
 
     public int getAmount() {
         return amount;
     }
 
-    public Item getItem() {
-        return item;
-    }
-
-    public double getPrice() {
-        return price;
+    public ItemToOrderDto getItemToOrderDto() {
+        return itemToOrderDto;
     }
 }

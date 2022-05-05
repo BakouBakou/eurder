@@ -16,7 +16,7 @@ public class OrderMapper {
     }
 
     public Order toOrder(Customer customer, NewOrderDto newOrderDto) {
-        return new Order(customer, itemGroupMapper.toItemGroupSet(newOrderDto.getNewItemGroupDtoSet()), newOrderDto.getTotalPrice());
+        return new Order(customer, itemGroupMapper.toItemGroupSet(newOrderDto.getNewItemGroupDtoSet()));
     }
 
     public OrderDto toOrderDto(Order order) {

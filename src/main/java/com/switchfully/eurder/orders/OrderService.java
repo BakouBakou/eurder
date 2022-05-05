@@ -1,6 +1,9 @@
 package com.switchfully.eurder.orders;
 
+import com.switchfully.eurder.items.Item;
+import com.switchfully.eurder.items.ItemMapper;
 import com.switchfully.eurder.items.ItemRepository;
+import com.switchfully.eurder.items.dtos.ItemToOrderDto;
 import com.switchfully.eurder.orders.dtos.NewOrderDto;
 import com.switchfully.eurder.orders.dtos.OrderDto;
 import com.switchfully.eurder.orders.exceptions.CustomerNotFoundException;
@@ -20,14 +23,12 @@ public class OrderService {
 
     private final OrderMapper orderMapper;
     private final OrderRepository orderRepository;
-    private final ItemRepository itemRepository;
     private final CustomerRepository customerRepository;
     private final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
-    public OrderService(OrderMapper orderMapper, OrderRepository orderRepository, ItemRepository itemRepository, CustomerRepository customerRepository) {
+    public OrderService(OrderMapper orderMapper, OrderRepository orderRepository, CustomerRepository customerRepository) {
         this.orderMapper = orderMapper;
         this.orderRepository = orderRepository;
-        this.itemRepository = itemRepository;
         this.customerRepository = customerRepository;
     }
 
@@ -41,12 +42,9 @@ public class OrderService {
         checkInput(customerById.isEmpty(), new CustomerNotFoundException(customerId));
         Customer customer = customerById.get();
 
-//        newOrderDto.getNewItemGroupDtoSet().stream()
-//                .map(itemGroup -> itemGroup.getId())
-//                .forEach(id -> checkInput(itemRepository.findItemById(id).isEmpty(), new ItemNotFoundException(id)));
-//        newOrderDto.getNewItemGroupDtoSet().stream()
-//                .map(itemGroup -> itemGroup.getAmount())
-//                .forEach(amount -> checkInput(amount <= 0, new InvalidItemAmountException()));
+        newOrderDto.getNewItemGroupDtoSet().stream()
+                .map(itemGroup -> itemGroup.getAmount())
+                .forEach(amount -> checkInput(amount <= 0, new InvalidItemAmountException()));
 
         Order newOrder = orderMapper.toOrder(customer, newOrderDto);
         Order savedOrder = orderRepository.saveOrder(newOrder);
@@ -54,10 +52,13 @@ public class OrderService {
         return orderMapper.toOrderDto(savedOrder);
     }
 
+
     private void checkInput(Boolean isInvalidInput, RuntimeException exceptionToThrow) {
         if (isInvalidInput) {
             logger.error(exceptionToThrow.getMessage());
             throw exceptionToThrow;
         }
     }
+
+
 }

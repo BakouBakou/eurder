@@ -35,12 +35,12 @@ public class ItemGroup {
     public ItemGroup() {
     }
 
-    public ItemGroup(int amount, Item item, double price) {
+    public ItemGroup(int amount, Item item) {
         this.id = UUID.randomUUID().toString();
         this.amount = amount;
         this.item = item;
 
-        this.price = price;
+        this.price = item.getPrice() * amount;
 
         // simplify
         this.shippingDate = calculateShippingDate();

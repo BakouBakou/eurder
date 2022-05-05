@@ -2,6 +2,7 @@ package com.switchfully.eurder.orders;
 
 import com.switchfully.eurder.items.Item;
 import com.switchfully.eurder.items.ItemRepository;
+import com.switchfully.eurder.items.dtos.ItemToOrderDto;
 import com.switchfully.eurder.orders.dtos.NewItemGroupDto;
 import com.switchfully.eurder.orders.dtos.NewOrderDto;
 import com.switchfully.eurder.users.customers.Customer;
@@ -81,7 +82,7 @@ class OrderControllerUnitTest {
     void givenItemThatDoesNotExist_whenOrderItems_thenBadRequestIsThrown() {
         //GIVEN
         Set<NewItemGroupDto> newItemGroupDtoSet = new HashSet<>();
-        newItemGroupDtoSet.add(new NewItemGroupDto(5, new Item("test", "test", 5, 5)));
+        newItemGroupDtoSet.add(new NewItemGroupDto(5, new ItemToOrderDto("IDoNotExist")));
         NewOrderDto emptyOrder = new NewOrderDto(
                 newItemGroupDtoSet
         );
@@ -104,7 +105,7 @@ class OrderControllerUnitTest {
     void givenNullOrNegativeAmountOfItems_whenOrderItems_thenBadRequestIsThrown() {
         //GIVEN
         Set<NewItemGroupDto> newItemGroupDtoSet = new HashSet<>();
-        newItemGroupDtoSet.add(new NewItemGroupDto(-5, new Item("test", "test", 5, 5)));
+        newItemGroupDtoSet.add(new NewItemGroupDto(-5, new ItemToOrderDto(item.getId())));
         NewOrderDto emptyOrder = new NewOrderDto(
                 newItemGroupDtoSet
         );
@@ -127,7 +128,7 @@ class OrderControllerUnitTest {
     void givenCustomerThatDoesNotExist_whenOrderItems_thenBadRequestIsThrown() {
         //GIVEN
         Set<NewItemGroupDto> newItemGroupDtoSet = new HashSet<>();
-        newItemGroupDtoSet.add(new NewItemGroupDto(2, item));
+        newItemGroupDtoSet.add(new NewItemGroupDto(2, new ItemToOrderDto(item.getId())));
         NewOrderDto emptyOrder = new NewOrderDto(
                 newItemGroupDtoSet
         );

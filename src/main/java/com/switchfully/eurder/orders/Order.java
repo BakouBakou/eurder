@@ -24,14 +24,16 @@ public class Order {
     @Column(name = "TOTAL_PRICE")
     private double totalPrice;
 
-    public Order(Customer customer, Set<ItemGroup> itemGroupSet, double totalPrice) {
+    public Order(Customer customer, Set<ItemGroup> itemGroupSet) {
         this.id = UUID.randomUUID().toString();
         this.customer = customer;
 
         this.itemGroupSet = new HashSet<>();
         this.itemGroupSet.addAll(itemGroupSet);
 
-        this.totalPrice = totalPrice;
+        this.totalPrice = itemGroupSet.stream()
+                .mapToDouble(itemGroup -> itemGroup.getPrice())
+                .sum();
     }
 
     public Order() {
