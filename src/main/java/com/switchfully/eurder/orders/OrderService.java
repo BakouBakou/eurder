@@ -1,15 +1,10 @@
 package com.switchfully.eurder.orders;
 
-import com.switchfully.eurder.items.Item;
-import com.switchfully.eurder.items.ItemMapper;
-import com.switchfully.eurder.items.ItemRepository;
-import com.switchfully.eurder.items.dtos.ItemToOrderDto;
 import com.switchfully.eurder.orders.dtos.NewOrderDto;
 import com.switchfully.eurder.orders.dtos.OrderDto;
 import com.switchfully.eurder.orders.exceptions.CustomerNotFoundException;
 import com.switchfully.eurder.orders.exceptions.EmptyOrderException;
 import com.switchfully.eurder.orders.exceptions.InvalidItemAmountException;
-import com.switchfully.eurder.orders.exceptions.ItemNotFoundException;
 import com.switchfully.eurder.users.customers.Customer;
 import com.switchfully.eurder.users.customers.CustomerRepository;
 import org.slf4j.Logger;
@@ -47,7 +42,7 @@ public class OrderService {
                 .forEach(amount -> checkInput(amount <= 0, new InvalidItemAmountException()));
 
         Order newOrder = orderMapper.toOrder(customer, newOrderDto);
-        Order savedOrder = orderRepository.saveOrder(newOrder);
+        Order savedOrder = orderRepository.save(newOrder);
         logger.info("new order with ID " + savedOrder.getId() + " saved for customer " + customerId);
         return orderMapper.toOrderDto(savedOrder);
     }

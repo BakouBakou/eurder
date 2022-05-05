@@ -19,7 +19,7 @@ public class ItemGroup {
 
     @Column(name = "AMOUNT")
     private int amount;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "FK_ITEM_ID")
     private Item item;
 
@@ -28,8 +28,8 @@ public class ItemGroup {
     @Column(name = "SHIPPING_DATE")
     private LocalDate shippingDate;
 
-    public ItemGroup() {
-    }
+    @Column(name = "FK_ORDER_DETAIL_ID")
+    private String orderId;
 
     public ItemGroup(int amount, Item item) {
         this.id = UUID.randomUUID().toString();
@@ -38,15 +38,18 @@ public class ItemGroup {
 
         this.price = item.getPrice() * amount;
 
-        // simplify
-        this.shippingDate = calculateShippingDate();
+        this.shippingDate = LocalDate.now().plusDays(calculateShippingDate());
     }
 
-    private LocalDate calculateShippingDate() {
+    public ItemGroup() {
+
+    }
+
+    private int calculateShippingDate() {
         if (this.amount < this.item.getStock()){
-            return LocalDate.now().plusDays(DAYS_BEFORE_SHIPPING_ITEM_IN_STOCK);
+            return DAYS_BEFORE_SHIPPING_ITEM_IN_STOCK;
         }
-        return LocalDate.now().plusDays(DAYS_BEFORE_SHIPPING_STOCK_INSUFFICIENT);
+        return DAYS_BEFORE_SHIPPING_STOCK_INSUFFICIENT;
     }
 
     public String getId() {
@@ -69,6 +72,10 @@ public class ItemGroup {
         return item;
     }
 
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -81,4 +88,5 @@ public class ItemGroup {
     public int hashCode() {
         return Objects.hash(id, amount, shippingDate);
     }
+
 }

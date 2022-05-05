@@ -21,6 +21,7 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static io.restassured.http.ContentType.JSON;
 
@@ -32,8 +33,6 @@ class OrderControllerIntegrationTest {
     private String customerId;
     private Item item1;
     private Item item2;
-    private Item item3;
-    private Item item4;
 
     @LocalServerPort
     private int port;
@@ -56,34 +55,21 @@ class OrderControllerIntegrationTest {
 
         item1 = itemRepository.save(new Item("some Item", "it's kinda cool", 10.99, 10));
         item2 = itemRepository.save(new Item("some Item2", "it's kinda cool2", 11.99, 11));
-        item3 = itemRepository.save(new Item("some Item3", "it's kinda cool3", 12.99, 12));
-        item4 = itemRepository.save(new Item("some Item4", "it's kinda cool4", 13.99, 13));
     }
 
     @Test
     void givenOrderItemsData_whenNewOrder_thenItemsAreOrdered() {
         //GIVEN
-//        Set<ItemGroup> itemGroupSet = new HashSet<>();
-//        itemGroupSet.add(new ItemGroup(5, item1, item1.getPrice() * 5));
-//        itemGroupSet.add(new ItemGroup(4, item2, item2.getPrice() * 4));
-//        itemGroupSet.add(new ItemGroup(3, item3, item3.getPrice() * 2));
-//        itemGroupSet.add(new ItemGroup(2, item4, item4.getPrice() * 2));
 
         Set<NewItemGroupDto> newItemGroupDtoSet = new HashSet<>();
         int item1Amount = 5;
         newItemGroupDtoSet.add(new NewItemGroupDto(item1Amount, new ItemToOrderDto(item1.getId())));
         int item2Amount = 4;
         newItemGroupDtoSet.add(new NewItemGroupDto(item2Amount, new ItemToOrderDto(item2.getId())));
-        int item3Amount = 3;
-        newItemGroupDtoSet.add(new NewItemGroupDto(item3Amount, new ItemToOrderDto(item3.getId())));
-        int item4Amount = 2;
-        newItemGroupDtoSet.add(new NewItemGroupDto(item4Amount, new ItemToOrderDto(item4.getId())));
 
         NewOrderDto expectedOrder = new NewOrderDto(newItemGroupDtoSet);
         double expectedTotalPrice = item1.getPrice() * item1Amount
-                + item2.getPrice() * item2Amount
-                + item3.getPrice() * item3Amount
-                + item4.getPrice() * item4Amount;
+                + item2.getPrice() * item2Amount;
 
         //WHEN
         OrderDto actualOrder = RestAssured
@@ -103,7 +89,12 @@ class OrderControllerIntegrationTest {
         //THEN
         Assertions.assertThat(actualOrder.getId()).isNotNull().isNotBlank().isNotEmpty();
         Assertions.assertThat(actualOrder.getCustomer().getId()).isEqualTo(customerId);
-//        Assertions.assertThat(actualOrder.getItemGroupDtoSet()).isEqualTo(expectedOrder.getNewItemGroupDtoSet());
+        Assertions.assertThat(actualOrder.getItemGroupDtoSet().stream()
+                        .map(itemGroupDto -> itemGroupDto.getItemDto().getId())
+                        .collect(Collectors.toSet()))
+                .containsAll(expectedOrder.getNewItemGroupDtoSet().stream()
+                        .map(newItemGroupDto -> newItemGroupDto.getItemToOrderDto().getId())
+                        .collect(Collectors.toSet()));
         Assertions.assertThat(actualOrder.getTotalPrice()).isEqualTo(expectedTotalPrice);
     }
 }

@@ -6,10 +6,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class OrderDto {
-    private final String id;
-    private final Customer customer;
-    private final Set<ItemGroupDto> itemGroupDtoSet;
-    private final double totalPrice;
+    private String id;
+    private Customer customer;
+    private Set<ItemGroupDto> itemGroupDtoSet;
+    private double totalPrice;
+
+    public OrderDto() {
+    }
 
     public OrderDto(String id, Customer customer, Set<ItemGroupDto> itemGroupSet, double totalPrice) {
         this.id = id;
