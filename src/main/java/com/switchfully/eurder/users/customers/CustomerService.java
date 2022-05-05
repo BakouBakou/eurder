@@ -34,31 +34,36 @@ public class CustomerService {
     public CustomerDto getCustomer(String id) {
         logger.info("Getting customer with id " + id);
 
-        // 2 db calls, not performant
-//        return customerRepository.findById(id)
-//                .map(customer -> {
-//
-//                    logger.info("Customer has been found");
-//                    return customerMapping.toCustomerDto(customer);
-//                })
-//                .orElseThrow(() -> {
-//                    logger.error(new CustomerNotFoundException(id).getMessage());
-//                    return new CustomerNotFoundException(id);
-//                });
-        if (customerRepository.findById(id).isEmpty()) {
-            logger.error(new CustomerNotFoundException(id).getMessage());
-            throw new CustomerNotFoundException(id);
-        }
-
-        logger.info("Customer has been found");
-        return customerMapping.toCustomerDto(customerRepository.findById(id).get());
+        return customerMapping.toCustomerDto(findCustomerById(id));
     }
+
 
     public CustomerDto createCustomer(CreateCustomerDto createCustomerDto) {
         logger.info("createCustomer started");
 
-//        @NotNull //javax, instance field
+        checkCreateCustomerDtoFields(createCustomerDto);
 
+        Customer newCustomer = customerMapping.toCustomer(createCustomerDto);
+        Customer savedCustomer = customerRepository.save(newCustomer);
+        logger.info("customer created in the database with id: " + savedCustomer.getId());
+        return customerMapping.toCustomerDto(savedCustomer);
+    }
+
+    public Customer findCustomerById(String id) {
+
+        return customerRepository.findById(id)
+                .map(customer -> {
+                    logger.info("Customer has been found");
+                    return customer;
+                })
+                .orElseThrow(() -> {
+                    logger.error(new CustomerNotFoundException(id).getMessage());
+                    return new CustomerNotFoundException(id);
+                });
+    }
+
+    private void checkCreateCustomerDtoFields(CreateCustomerDto createCustomerDto) {
+        //        @NotNull //javax, instance field
         //  could put on the DTO (sooner is better), check in the constructor, or even entity itself to reduce duplication
         // validator class grouping all the checks
         //Objects.requireNonNull(), and other existing methods for such checks might exist
@@ -71,11 +76,6 @@ public class CustomerService {
 
         // this kind of checks can only happen in the service because we need the repository to find the email
         checkInput(isExistingEmail(createCustomerDto), new EmailAlreadyInUseException());
-
-        Customer newCustomer = customerMapping.toCustomer(createCustomerDto);
-        Customer savedCustomer = customerRepository.save(newCustomer);
-        logger.info("customer created in the database with id: " + savedCustomer.getId());
-        return customerMapping.toCustomerDto(savedCustomer);
     }
 
     private void checkInput(Boolean isInvalidInput, RuntimeException exceptionToThrow) {
@@ -84,7 +84,6 @@ public class CustomerService {
             throw exceptionToThrow;
         }
     }
-
 
     private boolean isValidEmail(CreateCustomerDto createCustomerDto) {
         return !createCustomerDto.getEmail().matches("^(\\S+)@(\\S+)\\.([a-zA-Z]+)$");

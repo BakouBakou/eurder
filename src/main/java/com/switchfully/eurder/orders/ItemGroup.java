@@ -76,17 +76,4 @@ public class ItemGroup {
         this.orderId = orderId;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ItemGroup itemGroup = (ItemGroup) o;
-        return amount == itemGroup.amount && Objects.equals(id, itemGroup.id) && Objects.equals(shippingDate, itemGroup.shippingDate);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, amount, shippingDate);
-    }
-
 }

@@ -3,42 +3,38 @@ package com.switchfully.eurder.orders;
 import com.switchfully.eurder.items.ItemRepository;
 import com.switchfully.eurder.orders.dtos.NewOrderDto;
 import com.switchfully.eurder.orders.dtos.OrderDto;
-import com.switchfully.eurder.orders.exceptions.CustomerNotFoundException;
 import com.switchfully.eurder.orders.exceptions.EmptyOrderException;
 import com.switchfully.eurder.orders.exceptions.InvalidItemAmountException;
 import com.switchfully.eurder.users.customers.Customer;
 import com.switchfully.eurder.users.customers.CustomerRepository;
+import com.switchfully.eurder.users.customers.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class OrderService {
 
     private final OrderMapper orderMapper;
     private final OrderRepository orderRepository;
-    private final CustomerRepository customerRepository;
     private final Logger logger = LoggerFactory.getLogger(OrderService.class);
     private final ItemRepository itemRepository;
+    private final CustomerService customerService;
 
-    public OrderService(OrderMapper orderMapper, OrderRepository orderRepository, CustomerRepository customerRepository, ItemRepository itemRepository) {
+    public OrderService(OrderMapper orderMapper, OrderRepository orderRepository, ItemRepository itemRepository, CustomerService customerService) {
         this.orderMapper = orderMapper;
         this.orderRepository = orderRepository;
-        this.customerRepository = customerRepository;
         this.itemRepository = itemRepository;
+        this.customerService = customerService;
     }
 
     public OrderDto orderItems(String customerId, NewOrderDto newOrderDto) {
 
         logger.info("Initiating new order for customer " + customerId);
 
-        checkInput(newOrderDto.getNewItemGroupDtoSet().size() < 1, new EmptyOrderException());
+        Customer customer = customerService.findCustomerById(customerId);
 
-        Optional<Customer> customerById = customerRepository.findById(customerId);
-        checkInput(customerById.isEmpty(), new CustomerNotFoundException(customerId));
-        Customer customer = customerById.get();
+        checkInput(newOrderDto.getNewItemGroupDtoSet().size() < 1, new EmptyOrderException());
 
         newOrderDto.getNewItemGroupDtoSet().stream()
                 .map(itemGroup -> itemGroup.getAmount())
